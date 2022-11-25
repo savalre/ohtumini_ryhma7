@@ -25,7 +25,7 @@ jobs:
       - name: Run robot tests
         run: |
            cd src;
-           flask run &
+           poetry flask run &
            poetry robot tests
       - name: Coverage report
         run: |
