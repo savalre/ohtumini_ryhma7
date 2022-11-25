@@ -24,9 +24,12 @@ jobs:
         run: poetry run coverage run --branch -m pytest
       - name: Run robot tests
         run: |
+           cd src;
            flask run &
-           poetry robot src/tests
+           poetry robot tests
       - name: Coverage report
-        run: poetry run coverage xml
+        run: |
+           poetry run coverage html;
+           poetry run coverage xml
       - name: Lint
         run: poetry run pylint src
