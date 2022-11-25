@@ -24,7 +24,9 @@ jobs:
         run: poetry run coverage run --branch -m pytest
       - name: Run robot tests
         run: |
-           cd src;
+           cd src
+           pwd
+           pip -V
            poetry flask run &
            poetry robot tests
       - name: Coverage report
