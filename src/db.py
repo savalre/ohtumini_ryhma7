@@ -1,5 +1,5 @@
 """
-Muodostaa yhteyden tietokannan ja flask-appin välille.
+Creates a connection between the database and the Flask app
 """
 from os import path
 from flask_sqlalchemy import SQLAlchemy
