@@ -1,6 +1,6 @@
 """
-Luo tietokannan samassa hakemistossa olevan schema.sql
-tiedoston perusteella.
+Creates a database based on the schema.sql
+file in the same directory
 """
 import sqlite3
 
