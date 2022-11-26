@@ -5,3 +5,4 @@ report.html
 selenium-screenshot-*.png
 .coverage
 htmlcov
+*.db
