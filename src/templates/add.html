@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Add page</title>
+  </head>
+
+  <body>
+    <h1>Add citation:</h1>
+    <form method="POST" action="/">
+      {{ form.hidden_tag() }}
+      {{ form.cite }}
+      {{ form.author }}
+      {{ form.title }}
+      {{ form.year }}
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+</html>
