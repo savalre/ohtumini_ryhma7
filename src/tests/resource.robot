@@ -16,7 +16,7 @@ Open And Configure Browser
 
 //Placeholder test
 Main Page Should Be Open
-	Page Should Contain  Flask
+	Page Should Contain  Add citation:
 
 Go To Main Page
     Go To  ${HOME URL}
