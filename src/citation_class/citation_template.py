@@ -86,4 +86,3 @@ class BookCitation(CitationTemplate):
             list: List of all the possible field types
         """
         return self.required_fields + self.optional_fields
-        
