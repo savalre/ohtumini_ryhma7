@@ -44,6 +44,16 @@ suggestion-mode=yes
 # active Python interpreter and may run arbitrary code.
 unsafe-load-any-extension=no
 
+disable=
+    C0114, # missing-module-docstring
+    C0115, # missing-class-docstring
+    C0116, #Missing function or method docstring (missing-function-docstring)
+
+    
+    W0611, # Caused by "Unused import routes" in app.py
+    R0401, # Cyclic import (app -> routes) (cyclic-import)
+    C0413, # Import "import routes" should be placed at the top of the module (wrong-import-position)
+
 
 [MESSAGES CONTROL]
 

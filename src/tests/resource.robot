@@ -7,6 +7,7 @@ ${SERVER}  localhost:5000
 ${BROWSER}  headlesschrome
 ${DELAY}  0.0 seconds
 ${HOME URL}  http://${SERVER}
+${ADD BOOK CITATION}  http://${SERVER}/book
 
 *** Keywords ***
 Open And Configure Browser
@@ -20,3 +21,6 @@ Main Page Should Be Open
 
 Go To Main Page
     Go To  ${HOME URL}
+
+Go To Add Book Page
+    Go To  ${ADD BOOK CITATION} 
