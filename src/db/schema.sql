@@ -15,7 +15,6 @@ CREATE TABLE entry_types (
     citation_id INTEGER,
     type TEXT,
     cite_as TEXT,
-    deleted INTEGER
 );
 
 CREATE TABLE fields(
@@ -23,7 +22,6 @@ CREATE TABLE fields(
     citation_id INTEGER,
     type TEXT,
     value TEXT,
-    deleted INTEGER
 );
 
 

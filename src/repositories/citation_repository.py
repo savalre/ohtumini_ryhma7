@@ -55,13 +55,13 @@ class CitationRepository:
                     VALUES (:user_id, 0) RETURNING id"
             citation_id = self._db.session.execute(sql_citation, {"user_id": user_id}).fetchone()[0]
 
-            sql_entry_type = "INSERT INTO entry_types (citation_id, type, cite_as, deleted) \
-                    VALUES (:citation_id, :entry_type, :cite_as, 0)"
+            sql_entry_type = "INSERT INTO entry_types (citation_id, type, cite_as) \
+                    VALUES (:citation_id, :entry_type, :cite_as)"
             self._db.session.execute(sql_entry_type, {"citation_id": citation_id,
                                                       "entry_type":entry_type, "cite_as":cite_as})
 
-            sql_field = "INSERT INTO fields (citation_id, type, value, deleted)\
-                    VALUES (:citation_id, :type, :value, 0)"
+            sql_field = "INSERT INTO fields (citation_id, type, value)\
+                    VALUES (:citation_id, :type, :value)"
 
             for field_type, value in data.items():
                 self._db.session.execute(sql_field, {"citation_id": citation_id,
