@@ -1,3 +1,7 @@
+"""
+Citation Template
+"""
+
 class CitationTemplate():
     """A citation template is a template that is used to create a citation."""
     def __init__(self):
@@ -29,7 +33,11 @@ class CitationTemplate():
         """
         return self._data[key]
 
+
 class BookCitation(CitationTemplate):
+    """
+    Class for BookCitation
+    """
     def __init__(self):
         """Constructor for the BookCitation class. Initializes the CitationTemplate class
             and sets the required and optional fields for a book citation
