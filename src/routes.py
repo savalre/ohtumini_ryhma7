@@ -1,3 +1,7 @@
+"""
+Routes module for flask app
+Used by app.py
+"""
 from flask import render_template
 from app import app
 #Will be needed in future
@@ -15,6 +19,12 @@ def index():
 
 @app.route("/book", methods=['GET', 'POST'])
 def book():
+    """
+    Add book type citation page
+    Uses BookCitationForm from forms
+    Returns: html for book type citation page & values from form.validate_on_submit
+
+    """
     form = BookCitationForm()
     if form.validate_on_submit():
         # Form values to be passed to Citation Class in the future, accessible by: form.<field>.data
