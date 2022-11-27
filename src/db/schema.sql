@@ -23,6 +23,7 @@ CREATE TABLE field_type (
     citation_id INTEGER,
     tag TEXT,
     name TEXT,
+	 value TEXT,
     deleted INTEGER
 );
 
