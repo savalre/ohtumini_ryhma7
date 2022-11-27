@@ -5,7 +5,7 @@ from app import app
 from forms.citation_form import BookCitationForm
 
 @app.route("/")
-def add():
+def index():
     """
     Main page
     No parameters
