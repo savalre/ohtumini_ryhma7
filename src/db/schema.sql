@@ -10,20 +10,19 @@ CREATE TABLE citations (
     deleted INTEGER
 );
 
-CREATE TABLE entry_type (
+CREATE TABLE entry_types (
     id INTEGER PRIMARY KEY,
     citation_id INTEGER,
-    tag TEXT,
-    name TEXT,
+    type TEXT,
+    cite_as TEXT,
     deleted INTEGER
 );
 
-CREATE TABLE field_type (
+CREATE TABLE fields(
     id INTEGER PRIMARY KEY,
     citation_id INTEGER,
-    tag TEXT,
-    name TEXT,
-	 value TEXT,
+    type TEXT,
+    value TEXT,
     deleted INTEGER
 );
 

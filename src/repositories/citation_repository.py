@@ -14,6 +14,7 @@ class CitationRepository:
         user_id = 1
         #PLACEHOLDER CODE TO EXTRACT DATA FROM CITATION CLASS
         entry_type = citation.entry_type
+        cite_as = "test"
         data = citation.data
 
         self._db.session.begin()
@@ -21,10 +22,12 @@ class CitationRepository:
             sql_citation = "INSERT INTO citations (user_id, deleted) VALUES (:user_id, 0) RETURNING id"
             citation_id = self._db.session.execute(sql_citation, {"user_id": user_id}).fetchone()[0]
 
-            sql_entry_type = "INSERT INTO entry_type (citation_id, name, deleted) VALUES (:citation_id, :type, 0)"
-            self._db.session.execute(sql_entry_type, {"citation_id": citation_id, "type":entry_type})
+            sql_entry_type = "INSERT INTO entry_types (citation_id, type, cite_as, deleted)}
+                    VALUES (:citation_id, :entry_type, :cite_as, 0)"
+            self._db.session.execute(sql_entry_type,
+                                     {"citation_id": citation_id, "entry_type":entry_type, "cite_as":cite_as})
 
-            sql_field = "INSERT INTO field_type (citation_id, name, value, deleted)\
+            sql_field = "INSERT INTO fields (citation_id, type, value, deleted)\
                     VALUES (:citation_id, :type, :value, 0)"
 
             for field_type, value in data:
