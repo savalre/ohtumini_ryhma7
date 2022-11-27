@@ -5,6 +5,7 @@ Accepts and returns Citation objects
 """
 from sqlalchemy.exc import IntegrityError
 from db.db import db
+from citation_class.citation_template import BookCitation
 
 class PlaceholderCitation:
     """
@@ -40,14 +41,19 @@ class CitationRepository:
         Stores the citation in a DB
         Parameters:
             user_id to associate the citation with
-            citation of type Citation
+            citation of type CitationTemplate (or derived from it)
         Returns:
             True if succesful, otherwise False
         """
-        #PLACEHOLDER CODE TO EXTRACT DATA FROM CITATION CLASS
-        entry_type = citation.entry_type
-        cite_as = "test"
-        data = citation.data
+        data = citation.get_data_dict()
+
+        if "cite_as" not in data:
+            return False
+        cite_as = data["cite_as"]
+
+        if "entry_type" not in citation:
+            return False
+        entry_type = citation.get_data_entry("entry_type")
 
         self._db.session.begin()
         try:
@@ -64,6 +70,8 @@ class CitationRepository:
                     VALUES (:citation_id, :type, :value)"
 
             for field_type, value in data.items():
+                if field_type == "cite_as" or field_type == "entry_type":
+                    continue
                 self._db.session.execute(sql_field, {"citation_id": citation_id,
                                                      "type":field_type, "value" :value})
             self._db.session.commit()
@@ -91,9 +99,14 @@ class CitationRepository:
 
         for cite_id, cite_as, entry_type, field_type, field_value in result:
             if prev_cite_id != cite_id:
-                citations.append({"cite_id":cite_id, "cite_as":cite_as, "entry_type":entry_type})
+                if prev_cite_id > 0:
+                    if not citations[-1].check_required_fields():
+                        citations = citations[:-1]
+                if entry_type == "book":
+                    new_citation = BookCitation()
+                citations.append(new_citation)
                 prev_cite_id = cite_id
-            citations[-1][field_type] = field_value
+            citations[-1].add_field(field_type, field_value)
 
         return citations
 
