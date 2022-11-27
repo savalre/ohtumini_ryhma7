@@ -6,12 +6,13 @@
 
   <body>
     <h1>Add citation:</h1>
-    <form method="POST" action="/">
+    <form method="POST" action="/book">
       {{ form.hidden_tag() }}
       {{ form.cite }}
       {{ form.author }}
       {{ form.title }}
       {{ form.year }}
+      {{ form.publisher }}
       <button type="submit">Submit</button>
     </form>
   </body>
