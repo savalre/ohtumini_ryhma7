@@ -1,8 +1,10 @@
 from flask import render_template
 from app import app
+from entities.citation import Citation
 #Will be needed in future
 #from flask import redirect, session, request, url_for
 from forms.citation_form import BookCitationForm
+from repositories.citation_repository import CitationRepository
 
 @app.route("/")
 def index():
@@ -22,3 +24,8 @@ def book():
                 form.title.data + str(form.year.data) + form.publisher.data + '</h1>')
 
     return render_template('/book.html', form = form)
+
+@app.route("/citations")
+def list_citations():
+    list = CitationRepository.list_citations()
+    return render_template("citations.html", citation_list = list)

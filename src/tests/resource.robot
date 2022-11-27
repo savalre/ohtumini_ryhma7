@@ -8,6 +8,7 @@ ${BROWSER}  headlesschrome
 ${DELAY}  0.0 seconds
 ${HOME URL}  http://${SERVER}
 ${ADD BOOK CITATION}  http://${SERVER}/book
+${CITATIONS URL}  http://${SERVER}/citations
 
 *** Keywords ***
 Open And Configure Browser
@@ -24,3 +25,6 @@ Go To Main Page
 
 Go To Add Book Page
     Go To  ${ADD BOOK CITATION} 
+
+Go To Citations Page
+    Go To  ${CITATIONS URL}
