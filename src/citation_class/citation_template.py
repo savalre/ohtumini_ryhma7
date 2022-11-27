@@ -27,4 +27,3 @@ class BookCitation(CitationTemplate):
         return self.optional_fields
     def get_all_field_types(self):
         return self.required_fields + self.optional_fields
-        
