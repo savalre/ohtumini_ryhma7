@@ -1,6 +1,5 @@
 from flask import render_template
 from app import app
-from entities.citation import Citation
 #Will be needed in future
 #from flask import redirect, session, request, url_for
 from forms.citation_form import BookCitationForm
