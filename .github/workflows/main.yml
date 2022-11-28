@@ -25,7 +25,7 @@ jobs:
       - name: Init DB
         run: |
            cd src/db
-           poetry run init_db.py
+           poetry run python init_db.py
            cd ../../
       - name: Run robot tests
         run: |
