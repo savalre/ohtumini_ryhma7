@@ -5,27 +5,7 @@ Accepts and returns Citation objects
 """
 from sqlalchemy.exc import IntegrityError
 from db.db import db
-from citation_class.citation_template import BookCitation
-
-class PlaceholderCitation:
-    """
-    Placholder for proper citation
-    """
-    def __init__(self, entry_type, data):
-        self.entry_type = entry_type
-        self.data = data
-
-    def true(self):
-        """
-        Returns True
-        """
-        return True
-
-    def false(self):
-        """
-        Returns False
-        """
-        return False
+from entities.citation import Citation
 
 class CitationRepository:
     """
@@ -45,15 +25,10 @@ class CitationRepository:
         Returns:
             True if succesful, otherwise False
         """
-        data = citation.get_data_dict()
-
-        if "cite_as" not in data:
+        cite_as = citation.cite_as
+        entry_type = citation.entryname
+        if not cite_as or not entry_type:
             return False
-        cite_as = data["cite_as"]
-
-        if "entry_type" not in citation:
-            return False
-        entry_type = citation.get_data_entry("entry_type")
 
         self._db.session.begin()
         try:
@@ -69,11 +44,9 @@ class CitationRepository:
             sql_field = "INSERT INTO fields (citation_id, type, value)\
                     VALUES (:citation_id, :type, :value)"
 
-            for field_type, value in data.items():
-                if field_type == "cite_as" or field_type == "entry_type":
-                    continue
+            for field_type in citation.fieldtypes:
                 self._db.session.execute(sql_field, {"citation_id": citation_id,
-                                                     "type":field_type, "value" :value})
+                                                     "type":field_type[0], "value" :field_type[1]})
             self._db.session.commit()
             return True
         except IntegrityError as error:
@@ -93,21 +66,31 @@ class CitationRepository:
                 AND c.deleted=0 ORDER BY c.id"
 
         result = self._db.session.execute(sql, {"user_id":user_id}).fetchall()
-
+        
         citations = []
-        prev_cite_id = -1
-
-        for cite_id, cite_as, entry_type, field_type, field_value in result:
-            if prev_cite_id != cite_id:
-                if prev_cite_id > 0:
-                    if not citations[-1].check_required_fields():
-                        citations = citations[:-1]
-                if entry_type == "book":
-                    new_citation = BookCitation()
-                citations.append(new_citation)
-                prev_cite_id = cite_id
-            citations[-1].add_field(field_type, field_value)
-
+        # value[0] = c.id
+        # value[1] = e.cite_as
+        # value[2] = e.type
+        # value[3] = f.type
+        # value[4] = f.value
+        fields = []
+        id = 1
+        cite_as = ""
+        entry_name = ""
+        for value in result:
+            if value[0] > id:
+                citation = Citation(cite_as, entry_name, fields)
+                citations.append(citation)
+                id = id + 1
+                fields = []
+                cite_as = ""
+                entry_name = ""
+            fields.append((value[3], value[4]))
+            cite_as = value[1]
+            entry_name = value[2]
+        if (len(citations) == 0 and len(result) > 0) or (id > len(result)):
+            citation = Citation(cite_as, entry_name, fields)
+            citations.append(citation)
         return citations
 
 default_citation_repository = CitationRepository()
