@@ -22,11 +22,6 @@ jobs:
         run: poetry install
       - name: Run pytest tests
         run: poetry run coverage run --branch -m pytest
-      - name: Init database
-        run: |
-            cd src/db
-            poetry run init_db.py
-            cd ../../
       - name: Run robot tests
         run: |
            cd src
