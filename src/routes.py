@@ -72,9 +72,9 @@ def book():
         citation = Citation("RANDOM_CITE_AS_TAG", form.cite.data, fields)
         CitationRepository().store_citation(0, citation)
         return redirect("/book")
-    list = CitationRepository().list_citations(0)
-    for c in list:
-        print(c.entryname + "(" + c.cite_as + "), field_types: ")
-        for f in c.fieldtypes:
-            print(f)
+    #list = CitationRepository().list_citations(0)
+    #for c in list:
+        #print(c.entryname + "(" + c.cite_as + "), field_types: ")
+        # for f in c.fieldtypes:
+            #print(f)
     return render_template('/book.html', form = form)
