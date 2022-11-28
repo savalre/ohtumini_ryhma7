@@ -24,9 +24,6 @@ jobs:
         run: poetry run coverage run --branch -m pytest
       - name: Run robot tests
         run: |
-           cd src/db
-           poetry run python3 init_db.py
-           cd ../../
            cd src
            poetry run flask run &
            poetry run robot tests
