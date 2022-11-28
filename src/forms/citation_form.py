@@ -1,8 +1,18 @@
+"""
+Citation form for app.py/routes.py
+Currently holds booktype, could possibly hold all types in the future
+"""
+
+
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField
 from wtforms.validators import InputRequired, Length, Optional
 
 class BookCitationForm(FlaskForm):
+    """
+    Form for book type citation
+    """
+
     cite = StringField('cite', validators=[InputRequired(), Length(min=4)],
         render_kw={'placeholder': 'Cite...'})
     author = StringField('author', validators=[InputRequired(), Length(min=4)],
