@@ -26,5 +26,5 @@ def book():
 
 @app.route("/citations")
 def list_citations():
-    list = CitationRepository.list_citations()
+    list = CitationRepository().list_citations()
     return render_template("citations.html", citation_list = list)

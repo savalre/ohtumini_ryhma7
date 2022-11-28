@@ -9,7 +9,7 @@
     <ul>
         {% for citation in citation_list %}
         <li>
-            <p>@{{ citation.entryname }}</p>
+            <p>@{{ citation.entryname }} </p>
             {% for fieldtype in citation.fieldtypes %}
             <p>{{ fieldtype[0] }}: {{ fieldtype[1] }}</p>
             {% endfor %}
