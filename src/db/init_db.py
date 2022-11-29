@@ -4,7 +4,7 @@ file in the same directory
 """
 from os import remove
 import sqlite3
-from db.get_db_filepath import db_filepath, schema_filepath
+from get_db_filepath import db_filepath, schema_filepath
 
 def init_db():
     """
