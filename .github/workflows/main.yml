@@ -18,6 +18,7 @@ jobs:
           wget https://www.sqlite.org/2022/sqlite-autoconf-3400000.tar.gz
           tar -xvf sqlite-autoconf-3400000.tar.gz
       - name: Build SQLite
+        run: |
           ./configure
           make
           sudo make install
