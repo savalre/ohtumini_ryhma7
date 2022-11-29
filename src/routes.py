@@ -8,7 +8,7 @@ from entities.citation import Citation
 #Will be needed in future
 #from flask import redirect, session, request, url_for
 from forms.citation_form import BookCitationForm
-from repositories.citation_repository import CitationRepository
+import repositories.citation_repository as cite_repo
 
 @app.route("/")
 def index():
@@ -70,7 +70,7 @@ def book():
             fields.append(("url", url))
         
         citation = Citation("RANDOM_CITE_AS_TAG", form.cite.data, fields)
-        CitationRepository().store_citation(0, citation)
+        cite_repo.default_citation_repository.store_citation(0, citation)
         return redirect("/book")
     #list = CitationRepository().list_citations(0)
     #for c in list:

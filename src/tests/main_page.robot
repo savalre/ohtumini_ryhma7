@@ -7,6 +7,3 @@ Suite Teardown  Close Browser
 Open Main Page
     Go To Main Page
     Main Page Should Be Open
-
-Should Pass:
-    Placeholder Should Pass

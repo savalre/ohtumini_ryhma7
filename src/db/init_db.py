@@ -2,16 +2,19 @@
 Creates a database based on the schema.sql
 file in the same directory
 """
-from os import path, remove
+from os import remove
 import sqlite3
+from db.get_db_filepath import db_filepath, schema_filepath
 
-basedir = path.abspath(path.dirname(__file__))
-file_path = path.join(basedir, 'schema.sql')
+def init_db():
+    """
+    Creates the database
+    ALL DATA WILL BE LOST!
+    """
+    connection = sqlite3.connect(db_filepath)
 
-if path.exists('database.db'):
-  remove('database.db')
+    with open(schema_filepath, encoding='utf-8') as schema:
+        connection.executescript(schema.read())
 
-connection = sqlite3.connect('database.db')
-
-with open(file_path, encoding='utf-8') as schema:
-    connection.executescript(schema.read())
+if __name__=="__main__":
+    init_db()
