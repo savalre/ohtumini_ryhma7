@@ -74,7 +74,12 @@ class CitationRepository:
         # value[3] = f.type
         # value[4] = f.value
         fields = []
-        citation_id = result[0][0] 
+
+        if len(result) > 0:
+            citation_id = result[0][0] 
+        else:
+            citation_id = 0
+
         cite_as = ""
         entry_name = ""
         for value in result:
@@ -99,12 +104,13 @@ class CitationRepository:
         Clears all citation-related tables from DB
         Takes no arguments and returns nothing
         """
-        tables = ["entry_types", "fields", "citations"]
-        sql = "DELETE FROM :table;"
-
         self._db.session.begin()
-        for table in tables:
-            self._db.session.execute(sql, {"table":table})
+        sql = "DELETE FROM fields"
+        self._db.session.execute(sql)
+        sql = "DELETE FROM entry_types"
+        self._db.session.execute(sql)
+        sql = "DELETE FROM citations"
+        self._db.session.execute(sql)
         self._db.session.commit()
 
 default_citation_repository = CitationRepository()
