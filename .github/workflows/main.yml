@@ -44,6 +44,8 @@ jobs:
           poetry run flask run &
           poetry run robot tests
           cd ../
+        env:
+          LD_LIBRARY_PATH: /usr/local/lib
       - name: Coverage report
         run: |
           poetry run coverage html;
