@@ -66,7 +66,7 @@ class CitationRepository:
                 AND c.deleted=0 ORDER BY c.id"
 
         result = self._db.session.execute(sql, {"user_id":user_id}).fetchall()
-        
+
         citations = []
         # value[0] = c.id
         # value[1] = e.cite_as
@@ -76,7 +76,7 @@ class CitationRepository:
         fields = []
 
         if len(result) > 0:
-            citation_id = result[0][0] 
+            citation_id = result[0][0]
         else:
             citation_id = 0
 
