@@ -11,6 +11,7 @@ ${ADD BOOK CITATION}  http://${SERVER}/book
 
 *** Keywords ***
 Open And Configure Browser
+    Clear DB
     Open Browser  browser=${BROWSER}
     Maximize Browser Window
     Set Selenium Speed  ${DELAY}

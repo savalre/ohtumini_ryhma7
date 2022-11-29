@@ -21,7 +21,7 @@ Valid Form Sumbits
     Set Year  2022
     Set Publisher  publisher
     Click Button  Submit
-    Submit Should Succeed
+    Add Book Page Should Be Open
 
 *** Keywords ***
 Add Book Page Should Be Open
@@ -46,6 +46,3 @@ Set Year
 Set Publisher
     [Arguments]  ${publisher}
     Input Text  publisher  ${publisher}
-
-Submit Should Succeed
-    Page Should Contain  citeauthortitle2022publisher

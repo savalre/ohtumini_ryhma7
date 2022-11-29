@@ -11,6 +11,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # build SQLite from source
+      # From https://stackoverflow.com/questions/72165451/pytest-is-failing-on-github-actions-but-succeeds-locally
+      - name: Fetch SQLite
+        run: |
+          wget https://www.sqlite.org/2022/sqlite-autoconf-3400000.tar.gz
+          tar -xvf sqlite-autoconf-3400000.tar.gz
+      - name: Build SQLite
+        run: |
+          ./configure
+          make
+          sudo make install
+          export PATH="/usr/local/lib:$PATH"
+        working-directory: sqlite-autoconf-3400000
+
       - uses: actions/checkout@v2
       - name: Set up Python 3.8
         uses: actions/setup-python@v2
@@ -22,14 +36,22 @@ jobs:
         run: poetry install
       - name: Run pytest tests
         run: poetry run coverage run --branch -m pytest
+        env:
+          LD_LIBRARY_PATH: /usr/local/lib
       - name: Run robot tests
         run: |
-           cd src
-           poetry run flask run &
-           poetry run robot tests
+          cd src
+          poetry run flask run &
+          poetry run robot tests
+          cd ../
+        env:
+          LD_LIBRARY_PATH: /usr/local/lib
       - name: Coverage report
         run: |
-           poetry run coverage html;
-           poetry run coverage xml
+          poetry run coverage html;
+          poetry run coverage xml
       - name: Lint
         run: poetry run pylint src
+
+      - uses: actions/checkout@v2
+
