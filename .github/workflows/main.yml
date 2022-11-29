@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main, db-connection-fix]
+    branches: [main, ci-fix]
   pull_request:
     branches: [main]
 
