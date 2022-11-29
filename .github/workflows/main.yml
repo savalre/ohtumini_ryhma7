@@ -13,10 +13,11 @@ jobs:
     steps:
       # build SQLite from source
       # From https://stackoverflow.com/questions/72165451/pytest-is-failing-on-github-actions-but-succeeds-locally
-      - name: Build SQLite
+      - name: Fetch SQLite
         run: |
           wget https://www.sqlite.org/2022/sqlite-autoconf-3400000.tar.gz
           tar -xvf sqlite-autoconf-3400000.tar.gz
+      - name: Build SQLite
           ./configure
           make
           sudo make install
