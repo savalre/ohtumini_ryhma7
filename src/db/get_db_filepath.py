@@ -11,8 +11,10 @@ try:
 except FileNotFoundError:
     pass
 
-DB_FILENAME = os.getenv("DB_FILENAME") or "database.db"
-SCHEMA_FILENAME = os.getenv("SCHEMA_FILENAME") or "schema.sql"
+#DB_FILENAME = os.getenv("DB_FILENAME") or "database.db"
+#SCHEMA_FILENAME = os.getenv("SCHEMA_FILENAME") or "schema.sql"
+DB_FILENAME = "database.db"
+SCHEMA_FILENAME = "schema.sql"
 
 db_filepath = os.path.join(dirname, DB_FILENAME)
 schema_filepath = os.path.join(dirname, SCHEMA_FILENAME)
