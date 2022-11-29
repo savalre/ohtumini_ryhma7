@@ -21,7 +21,7 @@ class CitationRepository:
         Stores the citation in a DB
         Parameters:
             user_id to associate the citation with
-            citation of type CitationTemplate (or derived from it)
+            citation of type Citation
         Returns:
             True if succesful, otherwise False
         """
@@ -74,23 +74,37 @@ class CitationRepository:
         # value[3] = f.type
         # value[4] = f.value
         fields = []
-        id = 1
+        citation_id = result[0][0] 
         cite_as = ""
         entry_name = ""
         for value in result:
-            if value[0] > id:
+            if value[0] > citation_id:
+                citation_id = value[0]
                 citation = Citation(cite_as, entry_name, fields)
                 citations.append(citation)
-                id = id + 1
                 fields = []
                 cite_as = ""
                 entry_name = ""
             fields.append((value[3], value[4]))
             cite_as = value[1]
             entry_name = value[2]
-        if (len(citations) == 0 and len(result) > 0) or (id > len(result)):
+        # Janky way to get the last citation out
+        if len(result) > 0:
             citation = Citation(cite_as, entry_name, fields)
             citations.append(citation)
         return citations
+
+    def clear_citations(self):
+        """
+        Clears all citation-related tables from DB
+        Takes no arguments and returns nothing
+        """
+        tables = ["entry_types", "fields", "citations"]
+        sql = "DELETE FROM :table;"
+
+        self._db.session.begin()
+        for table in tables:
+            self._db.session.execute(sql, {"table":table})
+        self._db.session.commit()
 
 default_citation_repository = CitationRepository()
