@@ -4,14 +4,20 @@ file in the same directory
 """
 from os import path, remove
 import sqlite3
+from db.get_db_filepath import db_filepath, schema_filepath
 
-basedir = path.abspath(path.dirname(__file__))
-file_path = path.join(basedir, 'schema.sql')
+def init_db():
+    """
+    Creates the database
+    ALL DATA WILL BE LOST!
+    """
+    if path.exists(db_filepath):
+        remove(db_filepath)
 
-if path.exists('database.db'):
-  remove('database.db')
+    connection = sqlite3.connect(db_filepath)
 
-connection = sqlite3.connect('database.db')
+    with open(schema_filepath, encoding='utf-8') as schema:
+        connection.executescript(schema.read())
 
-with open(file_path, encoding='utf-8') as schema:
-    connection.executescript(schema.read())
+if __name__=="__main__":
+    init_db()

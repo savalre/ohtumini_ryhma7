@@ -1,7 +1,7 @@
 *** Settings ***
 Library  SeleniumLibrary
 Library  ../AppLibrary.py
-Library  ../db/init_db.py
+Variables  ./robot_test_env.py
 
 *** Variables ***
 ${SERVER}  localhost:5000

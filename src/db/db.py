@@ -1,11 +1,9 @@
 """
 Creates a connection between the database and the Flask app
 """
-from os import path
 from flask_sqlalchemy import SQLAlchemy
 from app import app
+from db.get_db_filepath import db_filepath
 
-basedir = path.abspath(path.dirname(__file__))
-
-app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///' + path.join(basedir, 'database.db')
+app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///' + db_filepath
 db = SQLAlchemy(app)
