@@ -1,7 +1,6 @@
 *** Settings ***
 Library  SeleniumLibrary
 Library  ../AppLibrary.py
-Variables  ./robot_test_env.py
 
 *** Variables ***
 ${SERVER}  localhost:5000
@@ -12,6 +11,7 @@ ${ADD BOOK CITATION}  http://${SERVER}/book
 
 *** Keywords ***
 Open And Configure Browser
+    Clear DB
     Open Browser  browser=${BROWSER}
     Maximize Browser Window
     Set Selenium Speed  ${DELAY}

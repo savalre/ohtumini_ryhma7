@@ -19,8 +19,9 @@ def index():
     """
     return '<h1>Flask</h1>'
 
+#Disable error, because the code is fine for now, and is going to be replaced in this sprint
 @app.route("/book", methods=['GET', 'POST'])
-def book():
+def book(): # pylint: disable=too-many-branches
     """
     Add book type citation page
     Uses BookCitationForm from forms
@@ -68,7 +69,7 @@ def book():
             fields.append(("key", key))
         if url:
             fields.append(("url", url))
-        
+
         citation = Citation("RANDOM_CITE_AS_TAG", form.cite.data, fields)
         cite_repo.default_citation_repository.store_citation(0, citation)
         return redirect("/book")
