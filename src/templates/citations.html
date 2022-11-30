@@ -12,10 +12,13 @@
     <ul>
         {% for citation in citation_list %}
         <li>
-            <p>@{{ citation.entryname }} </p>
+            @{{ citation.entryname }}{ {{ citation.cite_as }},
+            <br/>
             {% for fieldtype in citation.fieldtypes %}
-            <p>{{ fieldtype[0] }}: {{ fieldtype[1] }}</p>
+            {{ fieldtype[0] }}: { {{ fieldtype[1] }} },
+            <br/>
             {% endfor %}
+        }
         </li>
         <br/>
         {% endfor %}
