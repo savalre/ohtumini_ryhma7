@@ -8,16 +8,14 @@ from entities.citation import Citation
 #Will be needed in future
 #from flask import redirect, session, request, url_for
 from forms.citation_form import BookCitationForm
-import repositories.citation_repository as cite_repo
+from repositories.citation_repository import CitationRepository as cite_repo
 
 @app.route("/")
 def index():
     """
-    Main page
-    No parameters
-    Returns: html for front page (for use by flask)
+    Home page
     """
-    return '<h1>Flask</h1>'
+    return render_template("index.html")
 
 #Disable error, because the code is fine for now, and is going to be replaced in this sprint
 @app.route("/book", methods=['GET', 'POST'])
@@ -71,11 +69,19 @@ def book(): # pylint: disable=too-many-branches
             fields.append(("url", url))
 
         citation = Citation("RANDOM_CITE_AS_TAG", form.cite.data, fields)
-        cite_repo.default_citation_repository.store_citation(0, citation)
+        cite_repo().store_citation(0, citation)
         return redirect("/book")
     #list = CitationRepository().list_citations(0)
     #for c in list:
         #print(c.entryname + "(" + c.cite_as + "), field_types: ")
-        # for f in c.fieldtypes:
+        #for f in c.fieldtypes:
             #print(f)
     return render_template('/book.html', form = form)
+
+@app.route("/citations")
+def list_of_citations():
+    """
+    A page for diplaying all the citations of a user
+    """
+    # CHANGE DEFAULT VALUE OF USER_ID TO LOGGED IN USER ONCE SESSIONS HAVE BEEN ADDED!
+    return render_template("citations.html", citation_list = cite_repo().list_citations(0))
