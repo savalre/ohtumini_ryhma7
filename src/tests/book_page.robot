@@ -22,6 +22,12 @@ Valid Form Sumbits
     Set Publisher  publisher
     Click Button  Submit
     Add Book Page Should Be Open
+    Go To Citations Page
+    Page Should Contain  cite
+    Page Should Contain  author
+    Page Should Contain  title
+    Page Should Contain  2022
+    Page Should Contain  publisher
 
 *** Keywords ***
 Set Cite
