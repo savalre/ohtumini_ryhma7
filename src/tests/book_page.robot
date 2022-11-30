@@ -15,19 +15,19 @@ Invalid Form Does Not Submit
 
 Valid Form Sumbits
     Go To Add Book Page
-    Set Cite  cite
-    Set Author  author
-    Set Title  title
+    Set Cite  Book
+    Set Author  Moti Motivaatio
+    Set Title  Motivaation Puute
     Set Year  2022
-    Set Publisher  publisher
+    Set Publisher  Motivaatio OY
     Click Button  Submit
     Add Book Page Should Be Open
     Go To Citations Page
-    Page Should Contain  cite
-    Page Should Contain  author
-    Page Should Contain  title
-    Page Should Contain  2022
-    Page Should Contain  publisher
+    Page Should Contain  @Book
+    Page Should Contain  author: { Moti Motivaatio }
+    Page Should Contain  publisher: { Motivaatio OY }
+    Page Should Contain  title: { Motivaation Puute }
+    Page Should Contain  year: { 2022 }
 
 *** Keywords ***
 Set Cite
