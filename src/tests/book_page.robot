@@ -24,9 +24,6 @@ Valid Form Sumbits
     Add Book Page Should Be Open
 
 *** Keywords ***
-Add Book Page Should Be Open
-    Page Should Contain  Add citation:
-
 Set Cite
     [Arguments]  ${cite}
     Input Text  cite  ${cite}
