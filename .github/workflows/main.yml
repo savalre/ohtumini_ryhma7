@@ -34,6 +34,12 @@ jobs:
         run: pip install poetry
       - name: Install dependencies
         run: poetry install
+      - name: Create .env files
+        run: |
+          echo "DB_FILENAME=database.db" > .env
+          echo "DB_FILENAME=test_database.db" > .env.test
+          echo "SCHEMA_FILENAME=schema.sql" >> .env
+          echo "SCHEMA_FILENAME=schema.sql" >> .env.test
       - name: Run pytest tests
         run: poetry run coverage run --branch -m pytest
         env:

@@ -6,3 +6,5 @@ selenium-screenshot-*.png
 .coverage
 htmlcov
 *.db
+.env
+.env.test
