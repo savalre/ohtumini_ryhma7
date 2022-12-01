@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Add a new citation
+        </title>
+    </head>
+
+    <body>
+        <h1>
+            Add a new citation
+        </h1>
+        <p> Select an entry type from the options:
+            <form action="/new" method="post">
+                <select name="entry_type">
+                    <option value="article">article</option>
+                    <option value="book">book</option>
+                    <option value="booklet">booklet</option>
+                    <option value="conference">conference</option>
+                    <option value="inbook">inbook</option>
+                    <option value="incollection">incollection</option>
+                    <option value="inproceedings">inproceedings</option>
+                    <option value="manual">manual</option>
+                    <option value="mastersthesis">mastersthesis</option>
+                    <option value="misc">misc</option>
+                    <option value="phdthesis">phdthesis</option>
+                    <option value="proceedings">proceedings</option>
+                    <option value="techreport">techreport</option>
+                    <option value="unpublished">unpublished</option>
+                </select>
+                <input type="submit" value="Submit">
+            </form>
+            <br/>
+            <a href="/citations">View all citations</a>
+        </p>
+
+    </body>
+</html>

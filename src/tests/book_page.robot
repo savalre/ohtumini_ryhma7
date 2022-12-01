@@ -15,7 +15,7 @@ Invalid Form Does Not Submit
 
 Valid Form Sumbits
     Go To Add Book Page
-    Set Cite  Book
+    Set Cite  BkMM
     Set Author  Moti Motivaatio
     Set Title  Motivaation Puute
     Set Year  2022
@@ -24,6 +24,7 @@ Valid Form Sumbits
     Add Book Page Should Be Open
     Go To Citations Page
     Page Should Contain  @Book
+    Page Should Contain  BkMM
     Page Should Contain  author: { Moti Motivaatio }
     Page Should Contain  publisher: { Motivaatio OY }
     Page Should Contain  title: { Motivaation Puute }

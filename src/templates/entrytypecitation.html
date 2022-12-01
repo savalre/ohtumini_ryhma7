@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Add a new citation
+        </title>
+    </head>
+
+    <body>
+        <h1>
+            Add a new {{entry_type}} citation
+        </h1>
+        <br/>
+        <form action="/new/citation" method="post">
+            <input type="hidden" name="entry_type" value="{{ entry_type }}">
+            {% for l in list %}
+                {{l[0]}} : <input type="text" name = "{{ l[0] }}" {% if l[1] %} required {% endif %}><br/>
+                <br/>
+            {% endfor %}
+            <input type="submit" value="Submit">
+        </form>
+    </body>
+</html>
