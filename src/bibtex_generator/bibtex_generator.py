@@ -1,33 +1,33 @@
+"""
+Function for generating a BibTex string
+Uses the bibtexparser library to encode the citations
+"""
+
 from bibtexparser.bwriter import BibTexWriter
 from bibtexparser.bibdatabase import BibDatabase
 
-class BibtexGenerator():
+def generate_bibtex_string(citation_list):
     """
-    Class for generating a BibTex string
-    Uses the bibtexparser library to encode the citations
-    The constructor recieves a list of Citation objects
-    which are converted into the BibTex format
+        The function recieves a list of Citation objects
+        which are converted into the BibTex format.
+        The function formats the given list into
+        the format used by the bibtexparser library.
+
+    Args:
+        citation_list (List): List of Citation objects
     """
-    def __init__(self, citation_list):
-        self.db = BibDatabase()
+    bib_database = BibDatabase()
 
-        for i in range(len(citation_list)):
-            current_citation = citation_list[i]
-            self.db.entries.append({})
-            current_dictionary = self.db.entries[i]
+    for i, citation in enumerate(citation_list):
+        bib_database.entries.append({})
+        current_dictionary = bib_database.entries[i]
 
-            current_dictionary["ENTRYTYPE"] = current_citation.entryname
-            current_dictionary["ID"] = current_citation.cite_as
+        current_dictionary["ENTRYTYPE"] = citation.entryname
+        current_dictionary["ID"] = citation.cite_as
 
-            for field in current_citation.fieldtypes:
-                current_dictionary[field[0]] = field[1]
+        for field in citation.fieldtypes:
+            current_dictionary[field[0]] = field[1]
 
-    def generate_string(self):
-        """
-        This method generates and returns the citations in
-        a BibTex format as a string using the BibTexWriter 
-        class from the bibtexparser library.
-        """
-        writer = BibTexWriter()
-        writer.indent = '    '
-        return(writer.write(self.db))
+    writer = BibTexWriter()
+    writer.indent = '    '
+    return writer.write(bib_database)
