@@ -15,9 +15,5 @@ class TestBibtexGenerator(unittest.TestCase):
 
     def test_generates_correct_string_from_setup_case(self):
         generated_string = generate_bibtex_string([self.newcitation])
-        expected_result = "@book{PP,\
-    author = {Pekka Python},\
-    publisher = {Kaarme Talo},\
-    title = {Pythoinin Alkeet},\
-    year = {2002}\
-}"
+        expected_result = "@book{PP,\n    author = {Pekka Python},\n    publisher = {Kaarme Talo},\n    title = {Pythoinin Alkeet},\n    year = {2002}\n}\n"
+        assert expected_result == generated_string
