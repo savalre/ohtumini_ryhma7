@@ -8,7 +8,6 @@ from entities.citation import Citation
 from entities.types import Types
 #Will be needed in future
 #from flask import redirect, session, request, url_for
-from forms.citation_form import CitationForm
 from repositories.citation_repository import CitationRepository as cite_repo
 
 @app.route("/")
@@ -28,6 +27,9 @@ def list_of_citations():
 
 @app.route("/new", methods=["POST", "GET"])
 def new():
+    """
+    A page for selecting an entry type, that 
+    """
     if request.method == "GET":
         return render_template("newcitation.html")
     else:
@@ -37,6 +39,8 @@ def new():
 
 @app.route("/new/<entry_type>")
 def new_type(entry_type):
+    if entry_type not in Types().entry_types:
+        return redirect("/new")
     func = getattr(Types(), entry_type)
     list = func()
     return render_template("entrytypecitation.html", entry_type = entry_type, list = list)
@@ -52,8 +56,7 @@ def new_citation():
 
         for field_name in request.form:
             value = request.form.get(field_name)
-            print(value)
-            if value and not cite_as:
+            if value:
                 fields.append((field_name, value))
 
         citation = Citation(cite_as, entry_type, fields)
