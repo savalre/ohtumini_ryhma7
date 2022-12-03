@@ -56,7 +56,7 @@ def new_citation():
 
         for field_name in request.form:
             value = request.form.get(field_name)
-            if value:
+            if value and field_name != "cite_as" and field_name != "entry_type":
                 fields.append((field_name, value))
 
         citation = Citation(cite_as, entry_type, fields)
