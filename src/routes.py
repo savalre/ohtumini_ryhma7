@@ -2,13 +2,14 @@
 Routes module for flask app
 Used by app.py
 """
-from flask import render_template, redirect
+from flask import render_template, redirect, make_response
 from app import app
 from entities.citation import Citation
 #Will be needed in future
 #from flask import redirect, session, request, url_for
 from forms.citation_form import BookCitationForm
 from repositories.citation_repository import CitationRepository as cite_repo
+from bibtex_generator.bibtex_generator import generate_bibtex_string
 
 @app.route("/")
 def index():
@@ -85,3 +86,13 @@ def list_of_citations():
     """
     # CHANGE DEFAULT VALUE OF USER_ID TO LOGGED IN USER ONCE SESSIONS HAVE BEEN ADDED!
     return render_template("citations.html", citation_list = cite_repo().list_citations(0))
+
+@app.route("/citations.bib")
+def show_bib_file():
+    citations = cite_repo().list_citations(0)
+    if len(citations) == 0:
+        return "<h3>No citations selected</h3>"
+    bibtex = generate_bibtex_string(citations)
+    response = make_response(bibtex)
+    response.mimetype = "text/plain"
+    return response
