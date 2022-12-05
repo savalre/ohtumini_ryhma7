@@ -89,6 +89,10 @@ def list_of_citations():
 
 @app.route("/citations.bib")
 def show_bib_file():
+    """
+    A page for displaying citations in a form
+    that can be saved as a .bib file
+    """
     citations = cite_repo().list_citations(0)
     if len(citations) == 0:
         return "<h3>No citations selected</h3>"
