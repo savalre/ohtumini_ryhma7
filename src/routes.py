@@ -9,6 +9,7 @@ from entities.types import Types
 #Will be needed in future
 #from flask import redirect, session, request, url_for
 from repositories.citation_repository import CitationRepository as cite_repo
+from services.citation_service import CitationService as cite_service
 
 @app.route("/")
 def index():
@@ -56,10 +57,11 @@ def new_citation():
 
         for field_name in request.form:
             value = request.form.get(field_name)
-            if value:
+            if value and field_name != 'cite_as' and field_name != 'entry_type':
                 fields.append((field_name, value))
 
         citation = Citation(cite_as, entry_type, fields)
-        # validate citation
-        cite_repo().store_citation(0, citation)
-        return redirect("/new")
+        
+        if cite_service.validate(citation):
+            cite_repo().store_citation(0, citation)
+            return redirect("/new")
