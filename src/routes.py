@@ -29,7 +29,7 @@ def list_of_citations():
 @app.route("/new", methods=["POST", "GET"])
 def new():
     """
-    A page for selecting an entry type, that
+    A page for selecting an entry type
     """
     if request.method == "GET":
         return render_template("newcitation.html")
@@ -40,9 +40,8 @@ def new():
 @app.route("/new/<entry_type>")
 def new_type(entry_type):
     """
-    Helper function that gets the preferred entry type for new/citation
+    A page for selecting the field types of the selected entry type
     """
-
     if entry_type not in Types().entry_types:
         return redirect("/new")
     func = getattr(Types(), entry_type)
@@ -52,7 +51,8 @@ def new_type(entry_type):
 @app.route("/new/citation", methods=["POST", "GET"])
 def new_citation():
     """
-    Function that calls for validation and adds validated citations to cite.repo
+    Functionality for adding a new citation after receving the values from the correct form.
+    If the citation is valid, it is stored in the database.
     """
     if request.method == "GET":
         return redirect("/new")

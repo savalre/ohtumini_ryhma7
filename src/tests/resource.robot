@@ -7,7 +7,7 @@ ${SERVER}  localhost:5000
 ${BROWSER}  headlesschrome
 ${DELAY}  0.0 seconds
 ${HOME URL}  http://${SERVER}
-${ADD BOOK CITATION}  http://${SERVER}/book
+${ADD CITATION URL}  http://${SERVER}/new
 ${CITATIONS URL}  http://${SERVER}/citations
 
 *** Keywords ***
@@ -20,14 +20,14 @@ Open And Configure Browser
 Main Page Should Be Open
 	Page Should Contain  Welcome
 
-Add Book Page Should Be Open
-    Page Should Contain  Add citation:
+Add Citation Page Should Be Open
+    Page Should Contain  Add a new citation
 
 Go To Main Page
     Go To  ${HOME URL}
 
-Go To Add Book Page
-    Go To  ${ADD BOOK CITATION} 
+Go To Add Citation Page
+    Go To  ${ADD CITATION URL} 
 
 Go To Citations Page
     Go To  ${CITATIONS URL}
