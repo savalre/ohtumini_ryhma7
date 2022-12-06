@@ -29,39 +29,47 @@ def list_of_citations():
 @app.route("/new", methods=["POST", "GET"])
 def new():
     """
-    A page for selecting an entry type, that 
+    A page for selecting an entry type, that
     """
     if request.method == "GET":
         return render_template("newcitation.html")
-    else:
-        entry_type = request.form.get("entry_type")
-        return new_type(entry_type)
+    entry_type = request.form.get("entry_type")
+    return new_type(entry_type)
 
 
 @app.route("/new/<entry_type>")
 def new_type(entry_type):
+    """
+    Helper function that gets the preferred entry type for new/citation
+    """
+
     if entry_type not in Types().entry_types:
         return redirect("/new")
     func = getattr(Types(), entry_type)
-    list = func()
-    return render_template("entrytypecitation.html", entry_type = entry_type, list = list)
+    list_t = func()
+    return render_template("entrytypecitation.html", entry_type = entry_type, list = list_t)
 
 @app.route("/new/citation", methods=["POST", "GET"])
 def new_citation():
+    """
+    Function that calls for validation and adds validated citations to cite.repo
+    """
     if request.method == "GET":
         return redirect("/new")
-    else:
-        fields = []
-        entry_type = request.form.get("entry_type")
-        cite_as = request.form.get("cite_as")
 
-        for field_name in request.form:
-            value = request.form.get(field_name)
-            if value and field_name != 'cite_as' and field_name != 'entry_type':
-                fields.append((field_name, value))
+    fields = []
+    entry_type = request.form.get("entry_type")
+    cite_as = request.form.get("cite_as")
 
-        citation = Citation(cite_as, entry_type, fields)
-        
-        if cite_service.validate(citation):
-            cite_repo().store_citation(0, citation)
-            return redirect("/new")
+    for field_name in request.form:
+        value = request.form.get(field_name)
+        if value and field_name != 'cite_as' and field_name != 'entry_type':
+            fields.append((field_name, value))
+
+    citation = Citation(cite_as, entry_type, fields)
+    cite_serve = cite_service()
+
+    if cite_serve.validate(citation):
+        cite_repo().store_citation(0, citation)
+
+    return redirect("/new")

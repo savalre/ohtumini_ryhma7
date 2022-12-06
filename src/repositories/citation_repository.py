@@ -31,6 +31,9 @@ class CitationRepository:
             return False
 
         self._db.session.begin()
+        print()
+        print(user_id)
+        print(citation)
         try:
             sql_citation = "INSERT INTO citations (user_id, deleted) \
                     VALUES (:user_id, 0) RETURNING id"
