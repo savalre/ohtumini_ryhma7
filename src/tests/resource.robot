@@ -9,6 +9,7 @@ ${DELAY}  0.0 seconds
 ${HOME URL}  http://${SERVER}
 ${ADD CITATION URL}  http://${SERVER}/new
 ${CITATIONS URL}  http://${SERVER}/citations
+${BIB URL}  http://${SERVER}/citations.bib
 
 *** Keywords ***
 Open And Configure Browser
@@ -31,3 +32,6 @@ Go To Add Citation Page
 
 Go To Citations Page
     Go To  ${CITATIONS URL}
+
+Go To Bib Page
+    Go To  ${BIB URL}
