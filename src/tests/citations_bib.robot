@@ -7,10 +7,10 @@ Suite Teardown  Close Browser
 *** Test Cases ***
 Bib With No Citations
     Go To Bib Page
-    Page Should Contain  No citations selected
+    Page Should Contain  Add a new citation
 
 Bib With Citations
-    Go To Add Go To Citations Page
+    Go To Add Citation Page
     Select From List By Value  name:entry_type  book
     Click Button  Submit
     Set Cite  moti2022
@@ -20,7 +20,8 @@ Bib With Citations
     Set Publisher  Motivaatio OY
     Click Button  Submit
     Go To Bib Page
-    Page Should Contain  @moti2022
+    Page Should Contain  @book
+    Page Should Contain  moti2022
     Page Should Contain  author = {Moti Motivaatio}
     Page Should Contain  publisher = {Motivaatio OY}
     Page Should Contain  title = {Motivaation Puute}
