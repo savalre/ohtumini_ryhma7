@@ -35,7 +35,7 @@ def show_bib_file():
     """
     citations = cite_repo().list_citations(0)
     if len(citations) == 0:
-        return "<h3>No citations selected</h3>"
+        return redirect("/citations")
     bibtex = generate_bibtex_string(citations)
     response = make_response(bibtex)
     response.mimetype = "text/plain"
