@@ -2,14 +2,15 @@
 Routes module for flask app
 Used by app.py
 """
-from flask import render_template, redirect, make_response
+from flask import render_template, redirect, request, make_response
 from app import app
 from entities.citation import Citation
+from entities.types import Types
 #Will be needed in future
 #from flask import redirect, session, request, url_for
-from forms.citation_form import BookCitationForm
 from repositories.citation_repository import CitationRepository as cite_repo
 from bibtex_generator.bibtex_generator import generate_bibtex_string
+from services.citation_service import CitationService as cite_service
 
 @app.route("/")
 def index():
@@ -17,67 +18,6 @@ def index():
     Home page
     """
     return render_template("index.html")
-
-#Disable error, because the code is fine for now, and is going to be replaced in this sprint
-@app.route("/book", methods=['GET', 'POST'])
-def book(): # pylint: disable=too-many-branches
-    """
-    Add book type citation page
-    Uses BookCitationForm from forms
-    Returns: html for book type citation page & values from form.validate_on_submit
-
-    """
-    form = BookCitationForm()
-    if form.validate_on_submit():
-        # Form values to be passed to Citation Class in the future, accessible by: form.<field>.data
-        fields = []
-        author = form.author.data
-        title = form.title.data
-        year = form.year.data
-        publisher = form.publisher.data
-        volume = form.volume.data
-        series = form.series.data
-        address = form.address.data
-        edition = form.edition.data
-        month = form.month.data
-        note = form.note.data
-        key = form.key.data
-        url = form.url.data
-
-        if author:
-            fields.append(("author", author))
-        if title:
-            fields.append(("title", title))
-        if year:
-            fields.append(("year", str(year)))
-        if publisher:
-            fields.append(("publisher", publisher))
-        if volume:
-            fields.append(("volume", str(volume)))
-        if series:
-            fields.append(("series", str(series)))
-        if address:
-            fields.append(("address", address))
-        if edition:
-            fields.append(("edition", edition))
-        if month:
-            fields.append(("month", month))
-        if note:
-            fields.append(("note", note))
-        if key:
-            fields.append(("key", key))
-        if url:
-            fields.append(("url", url))
-
-        citation = Citation("RANDOM_CITE_AS_TAG", form.cite.data, fields)
-        cite_repo().store_citation(0, citation)
-        return redirect("/book")
-    #list = CitationRepository().list_citations(0)
-    #for c in list:
-        #print(c.entryname + "(" + c.cite_as + "), field_types: ")
-        #for f in c.fieldtypes:
-            #print(f)
-    return render_template('/book.html', form = form)
 
 @app.route("/citations")
 def list_of_citations():
@@ -95,8 +35,56 @@ def show_bib_file():
     """
     citations = cite_repo().list_citations(0)
     if len(citations) == 0:
-        return "<h3>No citations selected</h3>"
+        return redirect("/citations")
     bibtex = generate_bibtex_string(citations)
     response = make_response(bibtex)
     response.mimetype = "text/plain"
     return response
+
+@app.route("/new", methods=["POST", "GET"])
+def new():
+    """
+    A page for selecting an entry type
+    """
+    if request.method == "GET":
+        return render_template("newcitation.html")
+    entry_type = request.form.get("entry_type")
+    return new_type(entry_type)
+
+
+@app.route("/new/<entry_type>")
+def new_type(entry_type):
+    """
+    A page for selecting the field types of the selected entry type
+    """
+    if entry_type not in Types().entry_types:
+        return redirect("/new")
+    func = getattr(Types(), entry_type)
+    list_t = func()
+    return render_template("entrytypecitation.html", entry_type = entry_type, list = list_t)
+
+@app.route("/new/citation", methods=["POST", "GET"])
+def new_citation():
+    """
+    Functionality for adding a new citation after receving the values from the correct form.
+    If the citation is valid, it is stored in the database.
+    """
+    if request.method == "GET":
+        return redirect("/new")
+
+    fields = []
+    entry_type = request.form.get("entry_type")
+    cite_as = request.form.get("cite_as")
+
+    for field_name in request.form:
+        value = request.form.get(field_name)
+        if value and field_name != 'cite_as' and field_name != 'entry_type':
+            fields.append((field_name, value))
+
+    citation = Citation(cite_as, entry_type, fields)
+    cite_serve = cite_service()
+
+    if cite_serve.validate(citation):
+        cite_repo().store_citation(0, citation)
+
+    return redirect("/new")

@@ -1,7 +1,7 @@
 *** Keywords ***
 Set Cite
-    [Arguments]  ${cite}
-    Input Text  cite  ${cite}
+    [Arguments]  ${cite_as}
+    Input Text  cite_as  ${cite_as}
 
 Set Author
     [Arguments]  ${author}
