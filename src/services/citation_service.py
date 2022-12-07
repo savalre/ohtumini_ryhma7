@@ -9,7 +9,7 @@ class UserInputError(Exception):
     """
 
 
-class CitationService():
+class CitationService(): # pylint: disable=too-few-public-methods
     """
     Class for validating citations
     """
@@ -17,12 +17,6 @@ class CitationService():
     def __init__(self):
         self.cite_as = ""
         self.fieldtypes = ""
-
-    def cheat_pylint(self, word):
-        """
-        Method for pylint purposes
-        """
-        print(word)
 
     def validate(self, citation):
         """
