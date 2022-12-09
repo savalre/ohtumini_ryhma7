@@ -44,6 +44,10 @@ jobs:
         run: poetry run coverage run --branch -m pytest
         env:
           LD_LIBRARY_PATH: /usr/local/lib
+      - name: Coverage report
+        run: poetry run coverage xml
+      - name: Coverage report to Codecov
+        run: bash <(curl -s https://codecov.io/bash)
       - name: Run robot tests
         run: |
           cd src
@@ -52,16 +56,8 @@ jobs:
           cd ../
         env:
           LD_LIBRARY_PATH: /usr/local/lib
-      - name: Coverage report
-        run: |
-          poetry run coverage html;
-          poetry run coverage xml
       - name: Lint
         run: poetry run pylint src
-      - name: Coverage report
-        run: poetry run coverage xml
-      - name: Coverage report to Codecov
-        run: bash <(curl -s https://codecov.io/bash)
 
       - uses: actions/checkout@v2
 
