@@ -28,8 +28,6 @@ jobs:
           echo "SCHEMA_FILENAME=schema.sql" >> .env.test
       - name: Run pytest tests
         run: poetry run coverage run --branch -m pytest
-#        env:
-#          LD_LIBRARY_PATH: /usr/local/lib
       - name: Coverage report
         run: poetry run coverage xml
       - name: Coverage report to Codecov
@@ -40,8 +38,6 @@ jobs:
           poetry run flask run &
           poetry run robot tests
           cd ../
-#        env:
-#          LD_LIBRARY_PATH: /usr/local/lib
       - name: Lint
         run: poetry run pylint src
 
