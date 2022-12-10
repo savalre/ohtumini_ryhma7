@@ -21,10 +21,9 @@ def index():
 @app.route("/citations")
 def list_of_citations():
     """
-    A page for diplaying all the citations of a user
+    A page for diplaying all the citations
     """
-    # CHANGE DEFAULT VALUE OF USER_ID TO LOGGED IN USER ONCE SESSIONS HAVE BEEN ADDED!
-    return render_template("citations.html", citation_list = cite_repo().list_citations(0))
+    return render_template("citations.html", citation_list = cite_repo().list_citations())
 
 @app.route("/citations.bib")
 def show_bib_file():
@@ -32,7 +31,7 @@ def show_bib_file():
     A page for displaying citations in a form
     that can be saved as a .bib file
     """
-    citations = cite_repo().list_citations(0)
+    citations = cite_repo().list_citations()
     if len(citations) == 0:
         return redirect("/citations")
     bibtex = generate_bibtex_string(citations)
@@ -46,7 +45,13 @@ def new():
     A page for selecting an entry type
     """
     if request.method == "GET":
-        return render_template("newcitation.html")
+        with open("data.json", encoding="utf-8") as file:
+            data = json.load(file)
+            types_list = []
+            for entry_type in data:
+                list.append(entry_type)
+            return render_template("newcitation.html", list = types_list)
+
     entry_type = request.form.get("entry_type")
     return new_type(entry_type)
 
@@ -57,12 +62,12 @@ def new_type(entry_type):
     A page for selecting the field types of the selected entry type.
     The available entry types and their possible field types can be found in data.json.
     """
-    with open("data.json", encoding = 'utf-8') as file:
+    with open("data.json", encoding="utf-8") as file:
         data = json.load(file)
-    if not entry_type in data:
-        return redirect("/new")
-    list_t = tuple(data[entry_type].items())
-    return render_template("entrytypecitation.html", entry_type = entry_type, list = list_t)
+        if not entry_type in data:
+            return redirect("/new")
+        types_list = tuple(data[entry_type].items())
+        return render_template("entrytypecitation.html", entry_type = entry_type, list = types_list)
 
 @app.route("/new/citation", methods=["POST", "GET"])
 def new_citation():
@@ -86,6 +91,6 @@ def new_citation():
     cite_serve = cite_service()
 
     if cite_serve.validate(citation):
-        cite_repo().store_citation(0, citation)
+        cite_repo().store_citation(citation)
 
     return redirect("/new")
