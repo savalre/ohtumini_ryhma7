@@ -11,3 +11,4 @@ Ryhmän sprint ja product backlogit löytyvät [täältä](https://docs.google.c
  - Koodi on kattavasti yksikkötestattu
  - User storyn pohjalta tehdyt robot-testit menevät läpi
  - Koodi on saatettu main-branchiin pull requestin kautta, jonkun muun kuin alkuperäisen tekijän hyväksymänä
+
