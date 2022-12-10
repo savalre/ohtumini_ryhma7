@@ -54,55 +54,55 @@ class CitationRepository:
             return False
 
     def fetch_citations(self):
-            sql = """SELECT c.id, e.cite_as, e.type, f.type, f.value
-                    FROM citations c, entry_types e, fields f
-                    WHERE c.id=e.citation_id AND c.id=f.citation_id
-                    AND c.deleted=0 ORDER BY c.id"""
+        sql = """SELECT c.id, e.cite_as, e.type, f.type, f.value
+                FROM citations c, entry_types e, fields f
+                WHERE c.id=e.citation_id AND c.id=f.citation_id
+                AND c.deleted=0 ORDER BY c.id"""
 
-            return self._db.session.execute(sql).fetchall()
+        return self._db.session.execute(sql).fetchall()
 
     def list_citations(self):
-            """
-            Returns a list of non-deleted citations
-            Returns:
-                list of Citation type citations
-            """
+        """
+        Returns a list of non-deleted citations
+        Returns:
+            list of Citation type citations
+        """
 
-            fetched_result = self.fetch_citations()
+        fetched_result = self.fetch_citations()
 
-            fields = []
-            citations = []
-            # value[0] = c.id
-            # value[1] = e.cite_as
-            # value[2] = e.type
-            # value[3] = f.type
-            # value[4] = f.value
+        fields = []
+        citations = []
+        # value[0] = c.id
+        # value[1] = e.cite_as
+        # value[2] = e.type
+        # value[3] = f.type
+        # value[4] = f.value
 
-            if len(fetched_result) > 0:
-                citation_id = fetched_result[0][0]
-            else:
-                citation_id = 0
+        if len(fetched_result) > 0:
+            citation_id = fetched_result[0][0]
+        else:
+            citation_id = 0
 
-            cite_as = ""
-            entry_name = ""
+        cite_as = ""
+        entry_name = ""
 
-            for value in fetched_result:
-                if value[0] > citation_id:
-                    citation_id = value[0]
-                    citation = Citation(cite_as, entry_name, fields)
-                    citations.append(citation)
-                    fields = []
-                    cite_as = ""
-                    entry_name = ""
-                fields.append((value[3], value[4]))
-                cite_as = value[1]
-                entry_name = value[2]
-
-            # Janky way to get the last citation out
-            if len(fetched_result) > 0:
+        for value in fetched_result:
+            if value[0] > citation_id:
+                citation_id = value[0]
                 citation = Citation(cite_as, entry_name, fields)
                 citations.append(citation)
-            return citations
+                fields = []
+                cite_as = ""
+                entry_name = ""
+            fields.append((value[3], value[4]))
+            cite_as = value[1]
+            entry_name = value[2]
+
+        # Janky way to get the last citation out
+        if len(fetched_result) > 0:
+            citation = Citation(cite_as, entry_name, fields)
+            citations.append(citation)
+        return citations
 
     def clear_citations(self):
         """
