@@ -5,12 +5,10 @@ Used by app.py
 from flask import render_template, redirect, request, make_response
 from app import app
 from entities.citation import Citation
-from entities.types import Types
-#Will be needed in future
-#from flask import redirect, session, request, url_for
 from repositories.citation_repository import CitationRepository as cite_repo
 from bibtex_generator.bibtex_generator import generate_bibtex_string
 from services.citation_service import CitationService as cite_service
+import json
 
 @app.route("/")
 def index():
@@ -55,12 +53,15 @@ def new():
 @app.route("/new/<entry_type>")
 def new_type(entry_type):
     """
-    A page for selecting the field types of the selected entry type
+    A page for selecting the field types of the selected entry type. The available entry types and their possible field types
+    can be found in data.json.
     """
-    if entry_type not in Types().entry_types:
+    f = open("data.json")
+    data = json.load(f)
+    f.close()
+    if not entry_type in data:
         return redirect("/new")
-    func = getattr(Types(), entry_type)
-    list_t = func()
+    list_t = tuple(data[entry_type].items())
     return render_template("entrytypecitation.html", entry_type = entry_type, list = list_t)
 
 @app.route("/new/citation", methods=["POST", "GET"])

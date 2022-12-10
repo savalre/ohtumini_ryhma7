@@ -1,0 +1,206 @@
+{
+    "article":{
+        "author": true,
+        "title": true,
+        "journal": true,
+        "year": true,
+        "volume": true,
+
+        "number": false,
+        "pages": false,
+        "month": false,
+        "doi": false,
+        "note": false,
+        "key": false
+    },
+
+    "book":{
+        "author": true,
+        "title": true,
+        "publisher": true,
+        "year": true,
+
+        "volume": false,
+        "series": false,
+        "address": false,
+        "edition": false,
+        "month": false,
+        "note": false,
+        "key": false,
+        "url": false
+    },
+
+    "booklet":{
+        "title": true,
+
+        "author": false,
+        "howpublished": false,
+        "address": false,
+        "month": false,
+        "year": false,
+        "edition": false,
+        "note": false,
+        "key": false
+    },
+
+    "conference":{
+        "author": true,
+        "title": true,
+        "booktitle": true,
+        "year": true,
+
+        "editor": false,
+        "volume": false,
+        "series": false,
+        "pages": false,
+        "address": false,
+        "month": false,
+        "organization": false,
+        "publisher": false,
+        "note": false,
+        "key": false
+    },
+
+    "inproceedings":{
+        "author": true,
+        "title": true,
+        "booktitle": true,
+        "year": true,
+
+        "editor": false,
+        "volume": false,
+        "series": false,
+        "pages": false,
+        "address": false,
+        "month": false,
+        "organization": false,
+        "publisher": false,
+        "note": false,
+        "key": false
+    },
+
+    "inbook":{
+        "author": true,
+        "title": true,
+        "pages": true,
+        "publisher": true,
+        "year": true,
+
+        "volume": false,
+        "series": false,
+        "type": false,
+        "address": false,
+        "edition": false,
+        "month": false,
+        "note": false,
+        "key": false
+    },
+
+    "incollection":{
+        "author": true,
+        "title": true,
+        "booktitle": true,
+        "publisher": true,
+        "year": true,
+
+        "editor": false,
+        "volume": false,
+        "series": false,
+        "type": false,
+        "chapter": false,
+        "pages": false,
+        "address": false,
+        "edition": false,
+        "month": false,
+        "note": false,
+        "key": false
+    },
+
+    "manual":{
+        "title": true,
+
+        "author": false,
+        "organization": false,
+        "address": false,
+        "edition": false,
+        "month": false,
+        "year": false,
+        "note": false,
+        "key": false
+    },
+
+    "masterthesis":{
+        "author": true,
+        "title": true,
+        "school": true,
+        "year": true,
+
+        "type": false,
+        "address": false,
+        "month": false,
+        "note": false,
+        "key": false
+    },
+
+    "misc":{
+        "author": false,
+        "title": false,
+        "howpublished": false,
+        "month": false,
+        "year": false,
+        "note": false,
+        "key": false
+    },
+
+    "phdthesis":{
+        "author": true,
+        "title": true,
+        "school": true,
+        "year": true,
+
+        "type": false,
+        "address": false,
+        "month": false,
+        "note": false,
+        "key": false
+    },
+
+    "proceedings":{
+        "title": true,
+        "year": true,
+
+        "editor": false,
+        "volume": false,
+        "series": false,
+        "address": false,
+        "month": false,
+        "publisher": false,
+        "organization": false,
+        "note": false,
+        "key": false
+    },
+
+    "techreport":{
+        "author": true,
+        "title": true,
+        "institution": true,
+        "year": true,
+
+        "type": false,
+        "number": false,
+        "address": false,
+        "month": false,
+        "note": false,
+        "key": false
+    },
+
+    "unpublished":{
+        "author": true,
+        "title": true,
+        "note": true,
+
+        "month": false,
+        "year": false,
+        "key": false
+    }
+}

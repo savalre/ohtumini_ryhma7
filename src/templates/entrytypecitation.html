@@ -13,6 +13,9 @@
         <br/>
         <form action="/new/citation" method="POST">
             <input type="hidden" name="entry_type" value="{{ entry_type }}">
+            cite_as : <input type="text" name="cite_as"required>
+            <br/>
+            <br/>
             {% for l in list %}
                 {{l[0]}} : <input type="text" name = "{{ l[0] }}" {% if l[1] %} required {% endif %}><br/>
                 <br/>
