@@ -2,13 +2,14 @@
 Routes module for flask app
 Used by app.py
 """
+import json
 from flask import render_template, redirect, request, make_response
 from app import app
 from entities.citation import Citation
 from repositories.citation_repository import CitationRepository as cite_repo
 from bibtex_generator.bibtex_generator import generate_bibtex_string
 from services.citation_service import CitationService as cite_service
-import json
+
 
 @app.route("/")
 def index():
@@ -53,12 +54,11 @@ def new():
 @app.route("/new/<entry_type>")
 def new_type(entry_type):
     """
-    A page for selecting the field types of the selected entry type. The available entry types and their possible field types
-    can be found in data.json.
+    A page for selecting the field types of the selected entry type.
+    The available entry types and their possible field types can be found in data.json.
     """
-    f = open("data.json")
-    data = json.load(f)
-    f.close()
+    with open("data.json", encoding = 'utf-8') as file:
+        data = json.load(file)
     if not entry_type in data:
         return redirect("/new")
     list_t = tuple(data[entry_type].items())
