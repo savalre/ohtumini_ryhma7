@@ -49,7 +49,7 @@ def new():
             data = json.load(file)
             types_list = []
             for entry_type in data:
-                list.append(entry_type)
+                types_list.append(entry_type)
             return render_template("newcitation.html", list = types_list)
 
     entry_type = request.form.get("entry_type")
