@@ -11,11 +11,25 @@
             Add a new {{entry_type}} citation
         </h1>
         <br/>
+        <b>Required fields</b><br/><br/>
         <form action="/new/citation" method="POST">
             <input type="hidden" name="entry_type" value="{{ entry_type }}">
+            cite_as : <input type="text" name="cite_as"required>
+            <br/>
+            <br/>
             {% for l in list %}
-                {{l[0]}} : <input type="text" name = "{{ l[0] }}" {% if l[1] %} required {% endif %}><br/>
+                {% if l[1] %}
+                {{l[0]}} : <input type="text" name = "{{ l[0] }}" required><br/>
                 <br/>
+                {% endif %}
+            {% endfor %}
+            <br/>
+            <b>Optional fields</b><br/><br/>
+            {% for l in list %}
+                {% if not l[1] %}
+                {{l[0]}} : <input type="text" name = "{{ l[0] }}" ><br/>
+                <br/>
+                {% endif %}
             {% endfor %}
             <input type="submit" value="Submit">
         </form>

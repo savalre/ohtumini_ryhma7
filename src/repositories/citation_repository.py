@@ -16,11 +16,10 @@ class CitationRepository:
     def __init__(self, database=db):
         self._db = database
 
-    def store_citation(self, user_id, citation):
+    def store_citation(self, citation):
         """
         Stores the citation in a DB
         Parameters:
-            user_id to associate the citation with
             citation of type Citation
         Returns:
             True if succesful, otherwise False
@@ -31,13 +30,10 @@ class CitationRepository:
             return False
 
         self._db.session.begin()
-        #print()
-        #print(user_id)
-        #print(citation)
         try:
-            sql_citation = "INSERT INTO citations (user_id, deleted) \
-                    VALUES (:user_id, 0) RETURNING id"
-            citation_id = self._db.session.execute(sql_citation, {"user_id": user_id}).fetchone()[0]
+            sql_citation = "INSERT INTO citations (deleted) \
+                    VALUES (0) RETURNING id"
+            citation_id = self._db.session.execute(sql_citation).fetchone()[0]
 
             sql_entry_type = "INSERT INTO entry_types (citation_id, type, cite_as) \
                     VALUES (:citation_id, :entry_type, :cite_as)"
@@ -57,18 +53,18 @@ class CitationRepository:
             self._db.session.rollback()
             return False
 
-    def list_citations(self, user_id):
+    def list_citations(self):
         """
-        Returns a list of non-deleted citations by user id
+        Returns a list of non-deleted citations
         Returns:
             list of Citation type citations
         """
         sql = "SELECT c.id, e.cite_as, e.type, f.type, f.value \
                 FROM citations c, entry_types e, fields f \
-                WHERE c.user_id=:user_id AND c.id=e.citation_id AND c.id=f.citation_id \
+                WHERE c.id=e.citation_id AND c.id=f.citation_id \
                 AND c.deleted=0 ORDER BY c.id"
 
-        result = self._db.session.execute(sql, {"user_id":user_id}).fetchall()
+        result = self._db.session.execute(sql).fetchall()
 
         citations = []
         # value[0] = c.id

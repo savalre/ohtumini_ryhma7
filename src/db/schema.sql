@@ -1,12 +1,5 @@
-CREATE TABLE users (
-    id INTEGER PRIMARY KEY,
-    username TEXT,
-    password TEXT
-);
-
 CREATE TABLE citations (
     id INTEGER PRIMARY KEY,
-    user_id INTEGER,
     deleted INTEGER
 );
 
