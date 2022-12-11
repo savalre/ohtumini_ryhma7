@@ -1,32 +1,77 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <title>Citations</title>
-  </head>
-  
-  <body>
-    <h1>List of citations</h1>
-    <a href="/new">Add a new citation</a>
-    <br/>
-    <a href="/">Return to the home page</a>
-    <ul>
-        {% for citation in citation_list %}
-        <li>
-			  <input type="checkbox" name={{ citation.cite_as  }} checked="yes">
-            @{{ citation.entryname }}{ {{ citation.cite_as }},
-            <br/>
-            {% for fieldtype in citation.fieldtypes %}
-            {{ fieldtype[0] }}: { {{ fieldtype[1] }} },
-            <br/>
-            {% endfor %}
-        }
-        </li>
-        <br/>
-        {% endfor %}
-    </ul>
-    <br/>
-    <a href="/citations.bib">Create .bib file</a>
-    <br/>
-    <a href="/">Return to the home page</a>
-  </body>
+	<head>
+		<title>Citations</title>
+	</head>
+
+	<body>
+		<h1>List of citations</h1>
+		<a href="/new">Add a new citation</a>
+		<br/>
+		<a href="/">Return to the home page</a>
+		<ul>
+			{% for citation in citation_list %}
+			<li>
+				<input type="checkbox" name="selection" value={{ citation.cite_as  }}>
+				@{{ citation.entryname }}{ {{ citation.cite_as }},
+				<br/>
+				{% for fieldtype in citation.fieldtypes %}
+				{{ fieldtype[0] }}: { {{ fieldtype[1] }} },
+				<br/>
+				{% endfor %}
+				}
+			</li>
+			<br/>
+			{% endfor %}
+		</ul>
+		<br/>
+		<a href="/citations.bib">Create .bib file</a>
+		<br/>
+		<a href="/">Return to the home page</a>
+
+
+		<!-- Use JS to handle (de)selecting citations-->
+		<script>
+			// Select all checkboxes with the name 'selection' using querySelectorAll.
+			var checkboxes = document.querySelectorAll("input[type=checkbox][name=selection]");
+
+			// Fetch selected citations from cookies
+			let cookies = document.cookie.split(";");
+			let selectedCitations = [];
+			cookies.forEach(function(cookie) {
+				let key_value_pair = cookie.split("=");
+				if (key_value_pair[0] === "selection" && key_value_pair.length > 1) {
+					selectedCitations = key_value_pair[1].split(",");
+				}
+			});
+
+			// Use Array.forEach to check already selected citations
+			selectedCitations.forEach(function(citation) {
+				checkboxes.forEach(function(checkbox) {
+					if (checkbox.value === citation) {
+						checkbox.checked = true;
+					}
+				});
+			});
+
+			// Use Array.forEach to add an event listener to each checkbox.
+			checkboxes.forEach(function(checkbox) {
+				checkbox.addEventListener('change', updateSelectionCookie)});
+
+			// Update the cookie used to store selected citations
+			function updateSelectionCookie() {
+				if (this.checked) {
+					selectedCitations.push(this.value);
+				}
+				else {
+					for( var i = 0; i < selectedCitations.length; i++){ 
+						if ( selectedCitations[i] === this.value ) { 
+							selectedCitations.splice(i, 1); 
+						}
+					}
+				}
+				document.cookie = "selection=" + selectedCitations.join(",");
+			}
+		</script>
+	</body>
 </html>
