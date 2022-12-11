@@ -54,6 +54,12 @@ class CitationRepository:
             return False
 
     def fetch_citations(self):
+        """
+        Returns rows of non-deleted citations from DB
+        Returns:
+            list of tuples
+        """
+
         sql = """SELECT c.id, e.cite_as, e.type, f.type, f.value
                 FROM citations c, entry_types e, fields f
                 WHERE c.id=e.citation_id AND c.id=f.citation_id
