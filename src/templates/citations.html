@@ -12,6 +12,7 @@
     <ul>
         {% for citation in citation_list %}
         <li>
+			  <input type="checkbox" name={{ citation.cite_as  }} checked="yes">
             @{{ citation.entryname }}{ {{ citation.cite_as }},
             <br/>
             {% for fieldtype in citation.fieldtypes %}
@@ -24,7 +25,7 @@
         {% endfor %}
     </ul>
     <br/>
-    <a href="/citations.bib">Create BIB file</a>
+    <a href="/citations.bib">Create .bib file</a>
     <br/>
     <a href="/">Return to the home page</a>
   </body>
