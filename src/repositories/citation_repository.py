@@ -115,5 +115,12 @@ class CitationRepository:
         sql = "DELETE FROM citations"
         self._db.session.execute(sql)
         self._db.session.commit()
+    
+    def delete_selected_citations(self):
+        """
+        """
+        self._db.session.begin()
+        self._db.session.execute("")
+        self._db.session.commit()
 
 default_citation_repository = CitationRepository()

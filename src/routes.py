@@ -27,6 +27,19 @@ def list_of_citations():
     # CHANGE DEFAULT VALUE OF USER_ID TO LOGGED IN USER ONCE SESSIONS HAVE BEEN ADDED!
     return render_template("citations.html", citation_list = cite_repo().list_citations(0))
 
+@app.route("/delete/<id>" methods=["POST","GET"])
+def delete_selected_citations():
+    """'[summary]'
+
+    Returns:
+        [type]: [description]
+    """
+
+    cite_repo.delete_selected_citations()
+
+    return redirect(url_for("citations"))
+
+
 @app.route("/citations.bib")
 def show_bib_file():
     """
