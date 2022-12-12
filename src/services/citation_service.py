@@ -53,3 +53,13 @@ class CitationService(): # pylint: disable=too-few-public-methods
                 raise UserInputError("Text fields should contain atleast two characters")
 
         return True
+
+    def filter_to_selected(self, citations, selection_list):
+        """
+        Function that take a list of citations and 'cite_as' tags.
+        Returns a list containing the citation objects whose 'cite_as'
+        appears in the selection list.
+        """
+        selection_set = set(selection_list)
+        filtered_list = [cite for cite in citations if cite.cite_as in selection_set]
+        return filtered_list
