@@ -20,6 +20,17 @@
                 <input type="submit" value="Submit">
             </form>
             <br/>
+            You can also add a citation by doi:
+            <p>
+            <form action="/new_by_doi" method="post">
+                <label for="cite_as">Cite as:</label><br/>
+                <input type="text" id="cite_as" name="cite_as"><br/>
+                <lavel for="doi">doi:</label><br/>
+                <input type="text" name="doi"><br/>
+                <input type="submit" value="Submit">
+            </form>
+            </p>
+            <br/>
             <a href="/citations">View all citations</a>
             <br/>
             <a href="/">Return to the home page</a>
