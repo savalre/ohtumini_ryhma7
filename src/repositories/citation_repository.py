@@ -128,7 +128,8 @@ class CitationRepository:
         """
         """
         self._db.session.begin()
-        self._db.session.execute("")
+        #sql = ""
+        #self._db.session.execute(sql)
         self._db.session.commit()
 
 default_citation_repository = CitationRepository()
