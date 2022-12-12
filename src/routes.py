@@ -33,6 +33,10 @@ def show_bib_file():
     that can be saved as a .bib file
     """
     citations = cite_repo().list_citations()
+
+    selection = request.cookies.get("selection").split(",")
+    citations = cite_service().filter_to_selected(citations, selection)
+
     if len(citations) == 0:
         return redirect("/citations")
     bibtex = generate_bibtex_string(citations)
