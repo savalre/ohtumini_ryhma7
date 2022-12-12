@@ -76,14 +76,14 @@ class CitationRepository:
         Returns:
             Dictionary of citations
         """
-        for result in fetched_result:
+        for result in self.fetch_citations():
             if result[0] not in self.group_result:
                 self.group_result[result[0]] = []
             
             if result[0] in self.group_result:
                 self.group_result[result[0]].append(result[4])
     
-    def filter_citations(self, fetched_result, keyword):
+    def filter_citations(self, keyword):
         """
         Creates a filtered list of citations filtered by keyword given by user
         Takes in .fetchall() from as a parameter
@@ -93,7 +93,7 @@ class CitationRepository:
         for citation in self.group_result:
             for citation_field in self.group_result[citation]:
                 if str(keyword).upper() in str(citation_field).upper():
-                    for field in fetched_result:
+                    for field in self.fetch_citations():
                         if field[0] == citation and field not in self.new_fetched_result:
                             self.new_fetched_result.append(field)  
 
@@ -106,7 +106,7 @@ class CitationRepository:
 
         fetched_result = self.fetch_citations()
         self.group_citations(fetched_result)
-        self.filter_citations(fetched_result, keyword)
+        self.filter_citations(keyword)
         fetched_result = self.new_fetched_result
 
         fields = []
