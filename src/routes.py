@@ -34,10 +34,14 @@ def delete_selected_citations():
         [type]: [description]
     """
     if request.method == 'POST':
-        print(request.form.getlist('citation'))
-    #cite_repo.delete_selected_citations()
+        deletions_list = request.form.getlist('selection')
+        print(deletions_list)
+        cite_repo().delete_selected_citations(deletions_list)
+            
 
-    return redirect("/citations")
+    #message if database citation fails or succeeds
+
+    return redirect("/citations", message = "Citation deleted succesfully")
 
 
 @app.route("/citations.bib")
@@ -47,7 +51,7 @@ def show_bib_file():
     that can be saved as a .bib file
     """
     citations = cite_repo().list_citations()
-    
+
     selection = request.cookies.get("selection").split(",")
     citations = cite_service().filter_to_selected(citations, selection)
 

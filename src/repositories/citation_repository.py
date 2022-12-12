@@ -124,12 +124,26 @@ class CitationRepository:
         self._db.session.execute(sql)
         self._db.session.commit()
     
-    def delete_selected_citations(self):
+    def delete_selected_citations(self,deletions_list):
         """
         """
+        deleting_citations = deletions_list
         self._db.session.begin()
-        #sql = ""
-        #self._db.session.execute(sql)
+        for citation in deleting_citations:
+            values = {'id': citation}
+            sql = "SELECT c.id FROM citations c, entry_types e WHERE c.id=e.citation_id AND e.cite_as= :id"
+            citation_id = self._db.session.execute(sql,values)
+            print(citation_id)
+            #sql set delete to 1          
+            #self._db.session.execute(sql)
+
+        #sql = "INSERT INTO "
+        #SELECT c.id, e.cite_as, e.type, f.type, f.value
+         #       FROM citations c, entry_types e, fields f
+          #      WHERE c.id=e.citation_id AND c.id=f.citation_id
+           #     AND c.deleted=0 ORDER BY c.id"
+
         self._db.session.commit()
+        return True
 
 default_citation_repository = CitationRepository()
