@@ -6,6 +6,7 @@ Accepts and returns Citation objects
 from sqlalchemy.exc import IntegrityError
 from db.db import db
 from entities.citation import Citation
+from repositories.citation_repository import CitationRepository
 
 class SearchCitationRepository:
     """
@@ -17,43 +18,47 @@ class SearchCitationRepository:
         self.keyword = keyword
         self._db = database
         self.group_result = {}
+        self.new_fetched_result = []
         
-    def fetch_citations(self):
+    
+    def group_citations(self, fetched_result):
         """
-        Returns rows of non-deleted citations from DB
+        Creates a dictionary of citations grouped by id
+        Takes in .fetchall() from CitationRepository as a parameter
         Returns:
-            list of tuples
+            Dictionary of citations
         """
-
-        sql ="""SELECT c.id, e.cite_as, e.type, f.type, f.value
-                FROM citations c, entry_types e, fields f
-                WHERE c.id=e.citation_id AND c.id=f.citation_id
-                AND c.deleted=0 ORDER BY c.id"""
-
-
-        return self._db.session.execute(sql).fetchall()
-
-    def list_citations(self):
-        """
-        Returns a list of non-deleted citations
-        Returns:
-            list of Citation type citations
-        """
-        fetched_result = self.fetch_citations()
-        new_fetched_result = []
         for result in fetched_result:
             if result[0] not in self.group_result:
                 self.group_result[result[0]] = []
             
             if result[0] in self.group_result:
                 self.group_result[result[0]].append(result[4])
-
+    
+    def filter_citations(self, fetched_result):
+        """
+        Creates a filtered list of citations filtered by self.keyword given by user
+        Takes in .fetchall() from CitationRepository as a parameter
+        Returns:
+            List of filtered citations
+        """
         for citation in self.group_result:
             for citation_field in self.group_result[citation]:
                 if self.keyword in citation_field:
                     for field in fetched_result:
-                        if field[0] == citation and field not in new_fetched_result:
-                            new_fetched_result.append(field)
+                        if field[0] == citation and field not in self.new_fetched_result:
+                            self.new_fetched_result.append(field)    
+    
+    def list_citations(self):
+        """
+        Returns a list of non-deleted citations filtered by keyword in any value field
+        Returns:
+            list of Citation type citations
+        """
+        fetched_result = CitationRepository.fetch_citations(self)
+        
+        self.group_citations(fetched_result)
+        self.filter_citations(fetched_result)
 
         fields = []
         citations = []
@@ -63,15 +68,15 @@ class SearchCitationRepository:
         # value[3] = f.type
         # value[4] = f.value
 
-        if len(new_fetched_result) > 0:
-            citation_id = new_fetched_result[0][0]
+        if len(self.new_fetched_result) > 0:
+            citation_id = self.new_fetched_result[0][0]
         else:
             citation_id = 0
 
         cite_as = ""
         entry_name = ""
 
-        for value in new_fetched_result:
+        for value in self.new_fetched_result:
             if value[0] > citation_id:
                 citation_id = value[0]
                 citation = Citation(cite_as, entry_name, fields)
@@ -84,7 +89,7 @@ class SearchCitationRepository:
             entry_name = value[2]
 
         # Janky way to get the last citation out
-        if len(new_fetched_result) > 0:
+        if len(self.new_fetched_result) > 0:
             citation = Citation(cite_as, entry_name, fields)
             citations.append(citation)
         return citations
