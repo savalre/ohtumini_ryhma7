@@ -97,7 +97,7 @@ class CitationRepository:
                         if field[0] == citation and field not in self.new_fetched_result:
                             self.new_fetched_result.append(field)  
 
-    def list_citations(self, keyword):
+    def list_citations(self, keyword=""):
         """
         Returns a list of non-deleted citations
         Returns:

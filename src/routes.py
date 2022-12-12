@@ -28,7 +28,7 @@ def list_of_citations():
         keyword = request.form.get("keyword")
         return render_template("citations.html", citation_list = cite_repo().list_citations(keyword))
 
-    return render_template("citations.html", citation_list = cite_repo().list_citations(""))
+    return render_template("citations.html", citation_list = cite_repo().list_citations())
 
 @app.route("/citations.bib")
 def show_bib_file():
@@ -36,7 +36,7 @@ def show_bib_file():
     A page for displaying citations in a form
     that can be saved as a .bib file
     """
-    citations = cite_repo().list_citations("")
+    citations = cite_repo().list_citations()
     if len(citations) == 0:
         return redirect("/citations")
     bibtex = generate_bibtex_string(citations)

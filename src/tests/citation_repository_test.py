@@ -17,13 +17,13 @@ class TestCitationRepository(unittest.TestCase):
             citation = Citation("test_cite_as", "book", [("author","test_author")])
             cite_repo.store_citation(citation)
             cite_repo.clear_citations()
-            self.assertEqual(len(cite_repo.list_citations("")), 0)
+            self.assertEqual(len(cite_repo.list_citations()), 0)
 
     def test_list_with_one_citations(self):
         with app.app_context():
             citation = Citation("test_cite_as", "book", [("author","test_author")])
             cite_repo.store_citation(citation)
-            result = cite_repo.list_citations("")[0]
+            result = cite_repo.list_citations()[0]
             self.assertEqual(result.cite_as, "test_cite_as")
             self.assertEqual(result.entryname, "book")
             self.assertTrue(("author", "test_author") in result.fieldtypes)
@@ -37,12 +37,12 @@ class TestCitationRepository(unittest.TestCase):
             citation = Citation("test_cite_as2", "book2", [("author","test_author2")])
             cite_repo.store_citation(citation)
 
-            result = cite_repo.list_citations("")[0]
+            result = cite_repo.list_citations()[0]
             self.assertEqual(result.cite_as, "test_cite_as")
             self.assertEqual(result.entryname, "book")
             self.assertTrue(("author", "test_author") in result.fieldtypes)
 
-            result = cite_repo.list_citations("")[1]
+            result = cite_repo.list_citations()[1]
             self.assertEqual(result.cite_as, "test_cite_as2")
             self.assertEqual(result.entryname, "book2")
             self.assertTrue(("author", "test_author2") in result.fieldtypes)
