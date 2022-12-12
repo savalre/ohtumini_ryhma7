@@ -9,6 +9,10 @@
     <a href="/new">Add a new citation</a>
     <br/>
     <a href="/">Return to the home page</a>
+    <form action="/citations" method="post">
+      <input type="text" name="keyword">
+      <button type="submit">Search</button>
+    </form>
     <ul>
         {% for citation in citation_list %}
         <li>

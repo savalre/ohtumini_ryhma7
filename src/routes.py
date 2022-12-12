@@ -7,6 +7,7 @@ from flask import render_template, redirect, request, make_response
 from app import app
 from entities.citation import Citation
 from repositories.citation_repository import CitationRepository as cite_repo
+from repositories.search_citation_repository import SearchCitationRepository as search_cite_repo
 from bibtex_generator.bibtex_generator import generate_bibtex_string
 from services.citation_service import CitationService as cite_service
 
@@ -19,11 +20,15 @@ def index():
     """
     return render_template("index.html")
 
-@app.route("/citations")
+@app.route("/citations", methods=["POST","GET"])
 def list_of_citations():
     """
     A page for diplaying all the citations
     """
+    if request.method == "POST":
+        keyword = request.form.get("keyword")
+        return render_template("citations.html", citation_list = search_cite_repo(keyword).list_citations())
+
     return render_template("citations.html", citation_list = cite_repo().list_citations())
 
 @app.route("/citations.bib")
