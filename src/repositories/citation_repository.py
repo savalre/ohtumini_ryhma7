@@ -16,11 +16,10 @@ class CitationRepository:
     def __init__(self, database=db):
         self._db = database
 
-    def store_citation(self, user_id, citation):
+    def store_citation(self, citation):
         """
         Stores the citation in a DB
         Parameters:
-            user_id to associate the citation with
             citation of type Citation
         Returns:
             True if succesful, otherwise False
@@ -31,13 +30,10 @@ class CitationRepository:
             return False
 
         self._db.session.begin()
-        #print()
-        #print(user_id)
-        #print(citation)
         try:
-            sql_citation = "INSERT INTO citations (user_id, deleted) \
-                    VALUES (:user_id, 0) RETURNING id"
-            citation_id = self._db.session.execute(sql_citation, {"user_id": user_id}).fetchone()[0]
+            sql_citation = "INSERT INTO citations (deleted) \
+                    VALUES (0) RETURNING id"
+            citation_id = self._db.session.execute(sql_citation).fetchone()[0]
 
             sql_entry_type = "INSERT INTO entry_types (citation_id, type, cite_as) \
                     VALUES (:citation_id, :entry_type, :cite_as)"
@@ -57,35 +53,46 @@ class CitationRepository:
             self._db.session.rollback()
             return False
 
-    def list_citations(self, user_id):
+    def fetch_citations(self):
         """
-        Returns a list of non-deleted citations by user id
+        Returns rows of non-deleted citations from DB
+        Returns:
+            list of tuples
+        """
+
+        sql = """SELECT c.id, e.cite_as, e.type, f.type, f.value
+                FROM citations c, entry_types e, fields f
+                WHERE c.id=e.citation_id AND c.id=f.citation_id
+                AND c.deleted=0 ORDER BY c.id"""
+
+        return self._db.session.execute(sql).fetchall()
+
+    def list_citations(self):
+        """
+        Returns a list of non-deleted citations
         Returns:
             list of Citation type citations
         """
-        sql = "SELECT c.id, e.cite_as, e.type, f.type, f.value \
-                FROM citations c, entry_types e, fields f \
-                WHERE c.user_id=:user_id AND c.id=e.citation_id AND c.id=f.citation_id \
-                AND c.deleted=0 ORDER BY c.id"
 
-        result = self._db.session.execute(sql, {"user_id":user_id}).fetchall()
+        fetched_result = self.fetch_citations()
 
+        fields = []
         citations = []
         # value[0] = c.id
         # value[1] = e.cite_as
         # value[2] = e.type
         # value[3] = f.type
         # value[4] = f.value
-        fields = []
 
-        if len(result) > 0:
-            citation_id = result[0][0]
+        if len(fetched_result) > 0:
+            citation_id = fetched_result[0][0]
         else:
             citation_id = 0
 
         cite_as = ""
         entry_name = ""
-        for value in result:
+
+        for value in fetched_result:
             if value[0] > citation_id:
                 citation_id = value[0]
                 citation = Citation(cite_as, entry_name, fields)
@@ -96,8 +103,9 @@ class CitationRepository:
             fields.append((value[3], value[4]))
             cite_as = value[1]
             entry_name = value[2]
+
         # Janky way to get the last citation out
-        if len(result) > 0:
+        if len(fetched_result) > 0:
             citation = Citation(cite_as, entry_name, fields)
             citations.append(citation)
         return citations
