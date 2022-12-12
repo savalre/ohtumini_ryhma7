@@ -9,9 +9,9 @@
     <a href="/new">Add a new citation</a>
     <br/>
     <a href="/">Return to the home page</a>
-    <ul>
+    <ul style="list-style: none;">
         {% for citation in citation_list %}
-        <li>
+        <li><label><input type="checkbox">
             @{{ citation.entryname }}{ {{ citation.cite_as }},
             <br/>
             {% for fieldtype in citation.fieldtypes %}
@@ -19,7 +19,7 @@
             <br/>
             {% endfor %}
         }
-        </li>
+      </label></li>
         <br/>
         {% endfor %}
     </ul>

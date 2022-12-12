@@ -26,7 +26,7 @@ def list_of_citations():
     """
     return render_template("citations.html", citation_list = cite_repo().list_citations())
 
-@app.route("/delete/<id>" methods=["POST","GET"])
+@app.route("/delete/<id>", methods=["POST","GET"])
 def delete_selected_citations():
     """'[summary]'
 
@@ -34,7 +34,7 @@ def delete_selected_citations():
         [type]: [description]
     """
 
-    cite_repo.delete_selected_citations()
+    #cite_repo.delete_selected_citations()
 
     return redirect(url_for("citations"))
 
