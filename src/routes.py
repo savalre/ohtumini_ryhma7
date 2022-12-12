@@ -41,7 +41,7 @@ def delete_selected_citations():
 
     #message if database citation fails or succeeds
 
-    return redirect("/citations", message = "Citation deleted succesfully")
+    return redirect("/citations")
 
 
 @app.route("/citations.bib")

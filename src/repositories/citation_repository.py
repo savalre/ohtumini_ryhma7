@@ -130,12 +130,13 @@ class CitationRepository:
         deleting_citations = deletions_list
         self._db.session.begin()
         for citation in deleting_citations:
-            values = {'id': citation}
-            sql = "SELECT c.id FROM citations c, entry_types e WHERE c.id=e.citation_id AND e.cite_as= :id"
-            citation_id = self._db.session.execute(sql,values)
-            print(citation_id)
-            #sql set delete to 1          
-            #self._db.session.execute(sql)
+            values = {'citation': citation}
+            sql = "SELECT c.id FROM citations c, entry_types e WHERE c.id=e.citation_id AND e.cite_as= :citation"
+            citation_id = self._db.session.execute(sql,values).one()
+            print("SITAATIN ID = ", citation_id[0])
+            values = {'id': citation_id[0]}
+            sql = "UPDATE citations SET deleted = 1 WHERE id= :id"        
+            self._db.session.execute(sql,values)
 
         #sql = "INSERT INTO "
         #SELECT c.id, e.cite_as, e.type, f.type, f.value
