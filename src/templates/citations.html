@@ -9,9 +9,10 @@
     <a href="/new">Add a new citation</a>
     <br/>
     <a href="/">Return to the home page</a>
+    <form method="POST" action="/delete">
     <ul style="list-style: none;">
         {% for citation in citation_list %}
-        <li><label><input type="checkbox">
+        <li><label><input type="checkbox" value="{{citation.id}}" name="citation">
             @{{ citation.entryname }}{ {{ citation.cite_as }},
             <br/>
             {% for fieldtype in citation.fieldtypes %}
@@ -22,9 +23,9 @@
       </label></li>
         <br/>
         {% endfor %}
+      <input type="submit" value="Delete citation(s)" onclick="alert('Are you sure you want to delete selected citation(s)?')">
     </ul>
-    <br>
-    <a href="/delete" onclick="alert('Are you sure you want to delete selected citation(s)?')">Delete selected citation(s)</a>
+  </form>
     <br/>
     <a href="/citations.bib">Create BIB file</a>
   </body>
