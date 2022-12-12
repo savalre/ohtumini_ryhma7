@@ -11,24 +11,46 @@
             Add a new {{entry_type}} citation
         </h1>
         <br/>
+        {% if error %}
+        <b style="color:Tomato;">{{error}}</b><br/><br/>
+        {% endif %}
+
         <b>Required fields</b><br/><br/>
         <form action="/new/citation" method="POST">
             <input type="hidden" name="entry_type" value="{{ entry_type }}">
-            cite_as : <input type="text" name="cite_as"required>
+            cite_as : <input type="text" name="cite_as" value="{{cite_as}}" required>
             <br/>
             <br/>
             {% for l in list %}
-                {% if l[1] %}
-                {{l[0]}} : <input type="text" name = "{{ l[0] }}" required><br/>
-                <br/>
+                {% if error %}
+                    {% for f in fields %}
+                        {% if l[0] == f[0] and l[1] %}
+                            {{l[0]}} : <input type="text" name = "{{ l[0] }}" value="{{ f[1] }}" required><br/>
+                            <br/>
+                        {% endif %}
+                    {% endfor %}
+                {% elif noerror and l[1] %}
+                    {{l[0]}} : <input type="text" name = "{{ l[0] }}"required><br/>
+                    <br/>
                 {% endif %}
             {% endfor %}
             <br/>
             <b>Optional fields</b><br/><br/>
             {% for l in list %}
-                {% if not l[1] %}
-                {{l[0]}} : <input type="text" name = "{{ l[0] }}" ><br/>
-                <br/>
+                {% if error and not l[1]%}
+                    {% for f in fields %}
+                        {% if l[0] == f[0] and not l[1] %}
+                        {{l[0]}} : <input type="text" name = "{{ l[0] }}" value="{{ f[1] }}"><br/>
+                        <br/>
+                        {% endif %}
+                    {% endfor %}
+                    {% if loop.index > fields|length %}
+                        {{l[0]}} : <input type="text" name = "{{ l[0] }}"><br/>
+                        <br/>
+                    {% endif %}
+                {% elif noerror and not l[1] %}
+                    {{l[0]}} : <input type="text" name = "{{ l[0] }}"><br/>
+                    <br/>
                 {% endif %}
             {% endfor %}
             <input type="submit" value="Submit">

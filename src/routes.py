@@ -10,6 +10,7 @@ from repositories.citation_repository import CitationRepository as cite_repo
 from bibtex_generator.bibtex_generator import generate_bibtex_string
 from services.citation_service import CitationService as cite_service
 
+# pylint: disable=line-too-long, broad-except
 
 @app.route("/")
 def index():
@@ -62,12 +63,8 @@ def new_type(entry_type):
     A page for selecting the field types of the selected entry type.
     The available entry types and their possible field types can be found in data.json.
     """
-    with open("data.json", encoding="utf-8") as file:
-        data = json.load(file)
-        if not entry_type in data:
-            return redirect("/new")
-        types_list = tuple(data[entry_type].items())
-        return render_template("entrytypecitation.html", entry_type = entry_type, list = types_list)
+    types_list = get_list_of_field_types(entry_type)
+    return render_template("entrytypecitation.html", entry_type = entry_type, list = types_list, noerror = True)
 
 @app.route("/new/citation", methods=["POST", "GET"])
 def new_citation():
@@ -90,7 +87,23 @@ def new_citation():
     citation = Citation(cite_as, entry_type, fields)
     cite_serve = cite_service()
 
-    if cite_serve.validate(citation):
-        cite_repo().store_citation(citation)
-
+    try:
+        if cite_serve.validate(citation):
+            cite_repo().store_citation(citation)
+            return redirect("/new")
+    except Exception as user_error:
+        types_list = get_list_of_field_types(entry_type)
+        return render_template("entrytypecitation.html", entry_type = entry_type, list = types_list, error = user_error,
+        cite_as = cite_as, fields = fields)
     return redirect("/new")
+
+def get_list_of_field_types(entry_type):
+    """
+    Generates the field types of a given entry type
+    """
+    with open("data.json", encoding="utf-8") as file:
+        data = json.load(file)
+        if not entry_type in data:
+            return redirect("/new")
+        types_list = tuple(data[entry_type].items())
+        return types_list
