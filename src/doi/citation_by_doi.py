@@ -72,7 +72,7 @@ class CitationByDoi:
         the publication
         """
         words = title.split()
-        if "Proceedings" in words:
+        if "Proceedings" in words or "Conference" in words:
             return "inproceedings"
         return "article"
 
