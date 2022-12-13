@@ -2,8 +2,23 @@
 [![CI](https://github.com/savalre/ohtumini_ryhma7/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/savalre/ohtumini_ryhma7/actions/workflows/main.yml)
 [![codecov](https://codecov.io/gh/savalre/ohtumini_ryhma7/branch/main/graph/badge.svg?token=WXI3JMVJOM)](https://codecov.io/gh/savalre/ohtumini_ryhma7)
 
-
 Ryhmän sprint ja product backlogit löytyvät [täältä](https://docs.google.com/spreadsheets/d/1PqclL4F416XCGlqTMUGlVKjF476jDCD9jPbh827wm8E/edit#gid=0).
+
+## Ohjelman asennus
+Tiedostojen ladattua ensin siirry terminaalissa hakemistoon jossa on tiedosto poetry.lock.
+Suorita komento:
+
+>**poetry install**
+
+Kun kone on asentanut riippuvuudet, siirry src hakemistoon ja suorita seuraavat käskyt.
+
+>**poetry shell**
+>
+>**python3 build.py**
+>
+>**flask run**
+
+Ohjelma on osoitteessa http://127.0.0.1:5000. Ohjelman suorituksen voi lopettaa sulkemalla terminaalin.
 
 ## Definition of done
  - Koodi on olemassa
