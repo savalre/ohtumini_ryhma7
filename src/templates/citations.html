@@ -10,8 +10,8 @@
 		<br/>
 		<a href="/">Return to the home page</a>
 		<br/>
-		<button onclick="selectAll()">Select all</button>
-		<button onclick="deselectAll()">Deselect all</button>
+		<button id=select_all onclick="selectAll()">Select all</button>
+		<button id=deselect_all onclick="deselectAll()">Deselect all</button>
 		<ul>
 			{% for citation in citation_list %}
 			<li>
