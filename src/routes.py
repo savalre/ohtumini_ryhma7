@@ -28,6 +28,19 @@ def list_of_citations():
     """
     return render_template("citations.html", citation_list = cite_repo().list_citations())
 
+@app.route("/delete", methods=["POST"])
+def delete_selected_citations():
+    """
+    Deletes selected citations from DB and redirects back to citation list
+    """
+    deletions_list = request.form.getlist('selection')
+    try:
+        cite_repo().delete_selected_citations(deletions_list)
+        return redirect("/citations")
+    except Exception:
+        return redirect("/citations")
+
+
 @app.route("/citations.bib")
 def show_bib_file():
     """
