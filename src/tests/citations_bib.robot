@@ -73,3 +73,12 @@ Bib Deselect All Citations And Select One
     Go To Bib Page
     Page Should Contain  inspi2021
     Page Should Not Contain  moti2022
+
+Bib Selection Stays Across Page Change
+    Go To Citations Page
+    Click Button  deselect_all
+    Click Button  inspi2021
+    Go To Main Page
+    Go To Bib Page
+    Page Should Contain  inspi2021
+    Page Should Not Contain  moti2022
