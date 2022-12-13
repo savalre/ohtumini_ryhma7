@@ -16,6 +16,9 @@ p {
 b {
     color: white
 }
+label {
+    color: white
+}
 thead {
     color: rgb(183, 100, 100);
     background-color: black;
