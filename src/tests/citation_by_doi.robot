@@ -12,7 +12,7 @@ Add Citation By Valid Doi
     Click Button  submit_doi
     Add Citation Page Should Be Open
     Go To Citations Page
-    Page Should Contain  @article
+    Page Should Contain  article
     Page Should Contain  moti_22
     Page Should Contain  Ilana Bass and Dvir Lanzberg
     Page Should Contain  ACM SIGCSE Bulletin
