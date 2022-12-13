@@ -46,6 +46,12 @@ class TestCitationRepository(unittest.TestCase):
             self.assertEqual(result.cite_as, "test_cite_as2")
             self.assertEqual(result.entryname, "book2")
             self.assertTrue(("author", "test_author2") in result.fieldtypes)
+
+    def test_two_with_same_cite_as_fail(self):
+        with app.app_context():
+            citation = Citation("test_cite_as", "book", [("author","test_author")])
+            cite_repo.store_citation(citation)
+            self.assertRaises(ValueError, cite_repo.store_citation, citation)
     
     def test_delete_one_citation(self):
         with app.app_context():

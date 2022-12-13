@@ -27,13 +27,18 @@ class CitationRepository:
         cite_as = citation.cite_as
         entry_type = citation.entryname
         if not cite_as or not entry_type:
-            return False
+            raise ValueError("cite_as or entry type missing!")
 
         self._db.session.begin()
         try:
+            sql_check_if_exists = "SELECT 1 FROM entry_types WHERE cite_as=:cite_as"
+            exists = self._db.session.execute(sql_check_if_exists, {"cite_as":cite_as}).fetchone()
+            if exists:
+                raise ValueError("cite_as already taken!")
+
             sql_citation = "INSERT INTO citations (deleted) \
                     VALUES (0) RETURNING id"
-            citation_id = self._db.session.execute(sql_citation).fetchone()[0]
+            citation_id = self._db.session.execute(sql_citation, {"cite_as":cite_as}).fetchone()[0]
 
             sql_entry_type = "INSERT INTO entry_types (citation_id, type, cite_as) \
                     VALUES (:citation_id, :entry_type, :cite_as)"
@@ -49,9 +54,7 @@ class CitationRepository:
             self._db.session.commit()
             return True
         except IntegrityError as error:
-            print(error)
             self._db.session.rollback()
-            return False
 
     def fetch_citations(self):
         """

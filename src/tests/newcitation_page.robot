@@ -38,6 +38,18 @@ Valid Form Adds A New Citation
     Page Should Contain  title: { Motivaation Puute }
     Page Should Contain  year: { 2022 }
 
+Two Citations With Same Cite_as Fail
+    Go To Add Citation Page
+    Select From List By Value  name:entry_type  book
+    Click Button  Submit
+    Set Cite  moti2022
+    Set Author  Moti Motivaatio
+    Set Title  Motivaation Puute
+    Set Year  2022
+    Set Publisher  Motivaatio OY
+    Click Button  Submit
+    Page Should Contain  cite_as already taken!
+
 Invalid Form Does Not Add A New Citation
     Go To Add Citation Page
     Select From List By Value  name:entry_type  misc
