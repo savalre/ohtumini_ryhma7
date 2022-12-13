@@ -34,6 +34,9 @@ def show_bib_file():
     """
     citations = cite_repo().list_citations()
 
+    if not request.cookies:
+        return redirect("/citations")
+
     selection = request.cookies.get("selection").split(",")
     citations = cite_service().filter_to_selected(citations, selection)
 
