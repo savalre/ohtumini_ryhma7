@@ -18,3 +18,11 @@ Set Year
 Set Publisher
     [Arguments]  ${publisher}
     Input Text  publisher  ${publisher}
+
+Set Doi
+    [Arguments]  ${doi}
+    Input Text  doi  ${doi}
+
+Set Cite As
+    [Arguments]  ${cite_as}
+    Input Text  cite_as  ${cite_as}
