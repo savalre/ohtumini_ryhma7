@@ -31,7 +31,8 @@ class CitationRepository:
 
         self._db.session.begin()
         try:
-            sql_check_if_exists = "SELECT 1 FROM entry_types WHERE cite_as=:cite_as"
+            sql_check_if_exists = "SELECT 1 FROM citations c, entry_types e \
+                    WHERE c.id=e.citation_id AND c.deleted=0 AND cite_as=:cite_as"
             exists = self._db.session.execute(sql_check_if_exists, {"cite_as":cite_as}).fetchone()
             if exists:
                 raise ValueError("cite_as already taken!")
@@ -144,15 +145,15 @@ class CitationRepository:
         try:
             for citation in deleting_citations:
                 values = {'citation': citation}
-                sql = "SELECT c.id FROM citations c, entry_types e WHERE c.id=e.citation_id AND e.cite_as= :citation"
+                sql = "SELECT c.id FROM citations c, entry_types e WHERE c.id=e.citation_id \
+                        AND c.deleted=0 AND e.cite_as= :citation"
                 citation_id = self._db.session.execute(sql,values).one()
                 values = {'id': citation_id[0]}
-                sql = "UPDATE citations SET deleted = 1 WHERE id= :id"        
+                sql = "UPDATE citations SET deleted = 1 WHERE id= :id AND deleted=0"        
                 self._db.session.execute(sql,values)
                 self._db.session.commit()
-                return True
+            return True
         except IntegrityError as error:
-            print(error)
             self._db.session.rollback()
             return False
 

@@ -43,8 +43,6 @@ Delete One Of Two Citations
     Set Year  2022
     Set Publisher  Motivaatio OY
     Click Button  Submit
-    Go To Citations Page
-    Click Button  moti2022
 
     Go To Add Citation Page
     Select From List By Value  name:entry_type  booklet
@@ -66,6 +64,7 @@ Delete One Of Two Citations
     Page Should Not Contain  moti2022
 
 Delete Two Citations
+    Clear DB
     Go To Add Citation Page
     Select From List By Value  name:entry_type  book
     Click Button  Submit
@@ -76,7 +75,14 @@ Delete Two Citations
     Set Publisher  Motivaatio OY
     Click Button  Submit
     Go To Citations Page
-    Click Button  moti2022
+
+    Go To Add Citation Page
+    Select From List By Value  name:entry_type  booklet
+    Click Button  Submit
+    Set Cite  inspi2021
+    Set Title  Inspiraation Puute
+    Set Year  2021
+    Click Button  Submit
 
     Go To Citations Page
     Click Button  deselect_all
