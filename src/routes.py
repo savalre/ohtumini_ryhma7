@@ -10,6 +10,7 @@ from repositories.citation_repository import CitationRepository as cite_repo
 from bibtex_generator.bibtex_generator import generate_bibtex_string
 from services.citation_service import CitationService as cite_service
 from doi.citation_by_doi import CitationByDoi
+from doi.get_content import get_content
 
 # pylint: disable=line-too-long, broad-except
 
@@ -65,10 +66,11 @@ def new_by_doi():
     if request.method == "GET":
         return redirect("/new")
     raw_doi = request.form.get("doi")
-    doi = CitationByDoi(raw_doi)
-    citation_data = doi.get_references()
-    if citation_data == "404":
+    content = get_content(raw_doi)
+    if content == "404":
         return redirect("/new")
+    doi = CitationByDoi(content)
+    citation_data = doi.get_references()
     entry_type = citation_data['type']
     fields = []
     for data, values in citation_data.items():

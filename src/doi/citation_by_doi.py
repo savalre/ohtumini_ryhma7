@@ -4,7 +4,6 @@ Fetches the citation data from the ACM web library
 by doi
 """
 from bs4 import BeautifulSoup
-import requests
 
 class CitationByDoi:
     """
@@ -13,21 +12,16 @@ class CitationByDoi:
     Accepts doi as a string as a parameter
     Returns a dictionary of the metadata or an error message
     """
-    def __init__(self, doi):
-        self._url = f"https://dl.acm.org/doi/{doi}"
-        self._req = requests.get(self._url, timeout=10)
-        self._soup = BeautifulSoup(self._req.content, 'html.parser')
+    def __init__(self, content):
+        self._soup = BeautifulSoup(content, 'html.parser')
 
     def get_references(self):
         """
         Handles the creation of the metadata dictionary
 
         Returns:
-            Dictionary of the metadata if page exists,
-            otherwise error message
+            Dictionary of the metadata
         """
-        if self._req.status_code == 404:
-            return "404"
         data = {}
         data['author'] = self.get_authors()
         data['title'] = self.get_title()
