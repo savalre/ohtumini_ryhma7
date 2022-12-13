@@ -7,7 +7,7 @@ Suite Teardown  Close Browser
 *** Test Cases ***
 Bib With No Citations
     Go To Bib Page
-    Page Should Contain  Add a new citation
+    Page Should Contain  List of citations
 
 Bib With Citations
     Go To Add Citation Page
@@ -20,9 +20,8 @@ Bib With Citations
     Set Publisher  Motivaatio OY
     Click Button  Submit
     Go To Bib Page
-    Page Should Contain  @book
+    Page Should Contain  book
     Page Should Contain  moti2022
-    Page Should Contain  author = {Moti Motivaatio}
-    Page Should Contain  publisher = {Motivaatio OY}
-    Page Should Contain  title = {Motivaation Puute}
-    Page Should Contain  year = {2022}
+    Page Should Contain  Moti Motivaatio
+    Page Should Contain  Motivaation Puute
+    Page Should Contain  2022

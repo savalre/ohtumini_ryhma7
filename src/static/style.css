@@ -1,0 +1,29 @@
+body {
+    background-color: rgb(31, 30, 30);
+}
+h1 {
+    color: white;
+}
+h3 {
+    color: tomato;
+}
+a {
+    color: grey;
+}
+p {
+    color: white
+}
+b {
+    color: white
+}
+thead {
+    color: rgb(183, 100, 100);
+    background-color: black;
+}
+table {
+    width: 100%;
+}
+table, th, td {
+      border: 1px solid black;
+      color: white;
+}
