@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>
-            Add a new citation
-        </title>
+        <link href="{{ url_for('static', filename= 'style.css')}}" rel="stylesheet">
+        <title>Add a new citation</title>
     </head>
 
     <body>
@@ -12,13 +11,13 @@
         </h1>
         <br/>
         {% if error %}
-        <b style="color:Tomato;">{{error}}</b><br/><br/>
+        <h3>{{error}}</b><br/><br/>
         {% endif %}
 
-        <b>Required fields</b><br/><br/>
+        <b>Required fields</b><br/>
         <form action="/new/citation" method="POST">
             <input type="hidden" name="entry_type" value="{{ entry_type }}">
-            cite_as : <input type="text" name="cite_as" value="{{cite_as}}" required>
+            <p> cite_as : <input type="text" name="cite_as" value="{{cite_as}}" required>
             <br/>
             <br/>
             {% for l in list %}

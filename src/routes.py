@@ -9,6 +9,8 @@ from entities.citation import Citation
 from repositories.citation_repository import CitationRepository as cite_repo
 from bibtex_generator.bibtex_generator import generate_bibtex_string
 from services.citation_service import CitationService as cite_service
+from doi.citation_by_doi import CitationByDoi
+from doi.get_content import get_content
 
 # pylint: disable=line-too-long, broad-except
 
@@ -76,6 +78,35 @@ def new():
     entry_type = request.form.get("entry_type")
     return new_type(entry_type)
 
+@app.route("/new_by_doi", methods=["GET","POST"])
+def new_by_doi():
+    """
+    Functionality for adding a new citation with doi.
+    """
+    if request.method == "GET":
+        return redirect("/new")
+    raw_doi = request.form.get("doi")
+    content = get_content(raw_doi)
+    if content == "404":
+        return redirect("/new")
+    doi = CitationByDoi(content)
+    citation_data = doi.get_references()
+    entry_type = citation_data['type']
+    fields = []
+    for data, values in citation_data.items():
+        if data == 'type':
+            continue
+        fields.append((data,values))
+    cite_as = request.form.get("cite_as")
+    citation = Citation(cite_as, entry_type, fields)
+    cite_serve = cite_service()
+    try:
+        if cite_serve.validate(citation):
+            cite_repo().store_citation(citation)
+            return redirect("/new")
+    except Exception:
+        return redirect("/new")
+    return redirect("/new")
 
 @app.route("/new/<entry_type>")
 def new_type(entry_type):

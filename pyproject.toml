@@ -13,6 +13,7 @@ flask-wtf = "^1.0.1"
 wtforms = "^3.0.1"
 python-dotenv = "^0.21.0"
 bibtexparser = "^1.4.0"
+bs4 = "^0.0.1"
 
 
 [tool.poetry.group.dev.dependencies]

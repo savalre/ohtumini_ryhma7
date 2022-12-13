@@ -7,7 +7,7 @@ Suite Teardown  Close Browser
 *** Test Cases ***
 Bib With No Citations
     Go To Bib Page
-    Page Should Contain  Add a new citation
+    Page Should Contain  List of citations
 
 Bib Select One Citation
     Go To Add Citation Page
@@ -46,7 +46,7 @@ Bib Select All Citations
     Click Button  select_all
 
     Go To Bib Page
-    Page Should Contain  @book
+    Page Should Contain  book
     Page Should Contain  moti2022
     Page Should Contain  author = {Moti Motivaatio}
     Page Should Contain  publisher = {Motivaatio OY}

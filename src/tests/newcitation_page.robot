@@ -31,12 +31,11 @@ Valid Form Adds A New Citation
     Click Button  Submit
     Add Citation Page Should Be Open
     Go To Citations Page
-    Page Should Contain  @book
+    Page Should Contain  book
     Page Should Contain  moti2022
-    Page Should Contain  author: { Moti Motivaatio }
-    Page Should Contain  publisher: { Motivaatio OY }
-    Page Should Contain  title: { Motivaation Puute }
-    Page Should Contain  year: { 2022 }
+    Page Should Contain  Moti Motivaatio
+    Page Should Contain  Motivaation Puute
+    Page Should Contain  2022
 
 Two Citations With Same Cite_as Fail
     Go To Add Citation Page
@@ -60,9 +59,9 @@ Invalid Form Does Not Add A New Citation
     Click Button  Submit
     Page Should Contain  Add a new misc citation
     Go To Citations Page
-    Page Should Not Contain  @misc
-    Page Should Not Contain  author: { Ricotrap }
-    Page Should Not Contain  title: { God why }
+    Page Should Not Contain  misc
+    Page Should Not Contain  Ricotrap
+    Page Should Not Contain  God why
 
 *** Keywords ***
 Set Cite
