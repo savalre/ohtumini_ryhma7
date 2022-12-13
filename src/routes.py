@@ -21,11 +21,15 @@ def index():
     """
     return render_template("index.html")
 
-@app.route("/citations")
+@app.route("/citations", methods=["POST","GET"])
 def list_of_citations():
     """
     A page for diplaying all the citations
     """
+    if request.method == "POST":
+        keyword = request.form.get("keyword")
+        return render_template("citations.html", citation_list = cite_repo().list_citations(keyword))
+
     return render_template("citations.html", citation_list = cite_repo().list_citations())
 
 @app.route("/delete", methods=["POST"])
