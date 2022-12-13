@@ -8,7 +8,7 @@ Open Citation Page
     Go To Citations Page
     Citations Page Should Be Open
 
-Filtering Should Not Be Successful
+Search Should Not Be Successful
     Go To Add Citation Page
     Select From List By Value  name:entry_type  book
     Click Button  Submit
@@ -24,7 +24,7 @@ Filtering Should Not Be Successful
     Click Button  Search
     Page Should Not Contain  Moti Motivaatio
 
-Filtering Should Be Successful
+Search Should Be Successful
     Go To Add Citation Page
     Select From List By Value  name:entry_type  book
     Click Button  Submit
@@ -66,4 +66,4 @@ Set Publisher
 
 Set Keyword
     [Arguments]  ${keyword}
-    Input Text  keyword  ${keyword}
+    Input Text  keyword ${keyword}

@@ -29,13 +29,19 @@ class CitationRepository:
         cite_as = citation.cite_as
         entry_type = citation.entryname
         if not cite_as or not entry_type:
-            return False
+            raise ValueError("cite_as or entry type missing!")
 
         self._db.session.begin()
         try:
+            sql_check_if_exists = "SELECT 1 FROM citations c, entry_types e \
+                    WHERE c.id=e.citation_id AND c.deleted=0 AND cite_as=:cite_as"
+            exists = self._db.session.execute(sql_check_if_exists, {"cite_as":cite_as}).fetchone()
+            if exists:
+                raise ValueError("cite_as already taken!")
+
             sql_citation = "INSERT INTO citations (deleted) \
                     VALUES (0) RETURNING id"
-            citation_id = self._db.session.execute(sql_citation).fetchone()[0]
+            citation_id = self._db.session.execute(sql_citation, {"cite_as":cite_as}).fetchone()[0]
 
             sql_entry_type = "INSERT INTO entry_types (citation_id, type, cite_as) \
                     VALUES (:citation_id, :entry_type, :cite_as)"
@@ -50,8 +56,7 @@ class CitationRepository:
                                                      "type":field_type[0], "value" :field_type[1]})
             self._db.session.commit()
             return True
-        except IntegrityError as error:
-            print(error)
+        except IntegrityError:
             self._db.session.rollback()
             return False
 
@@ -156,5 +161,35 @@ class CitationRepository:
         sql = "DELETE FROM citations"
         self._db.session.execute(sql)
         self._db.session.commit()
+
+    def delete_selected_citations(self,deletions_list):
+        """[Deletes selected citations from DB
+            by first searching citation.id for selected citation and then
+            updating deleted-value to 1 so that citation doesn't show in lists anymore]
+
+        Args:
+            deletions_list ([string]): [list of cite_as-parameters of selected citations]
+
+        Returns:
+            [boolean]: [True or False depending on if deleting of citations was successful or not]
+        """
+
+        deleting_citations = deletions_list
+        self._db.session.begin()
+        try:
+            for citation in deleting_citations:
+                values = {'citation': citation}
+                sql = "SELECT c.id FROM citations c, entry_types e WHERE c.id=e.citation_id \
+                        AND c.deleted=0 AND e.cite_as= :citation"
+                citation_id = self._db.session.execute(sql,values).one()
+                values = {'id': citation_id[0]}
+                sql = "UPDATE citations SET deleted = 1 WHERE id= :id AND deleted=0"
+                self._db.session.execute(sql,values)
+                self._db.session.commit()
+            return True
+        except IntegrityError:
+            self._db.session.rollback()
+            return False
+
 
 default_citation_repository = CitationRepository()
