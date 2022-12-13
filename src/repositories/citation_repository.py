@@ -15,8 +15,6 @@ class CitationRepository:
     """
     def __init__(self, database=db):
         self._db = database
-        self.group_result = {}
-        self.new_fetched_result = []
 
     def store_citation(self, citation):
         """
@@ -74,33 +72,37 @@ class CitationRepository:
 
         return self._db.session.execute(sql).fetchall()
 
-    def group_citations(self):
+    def group_citations(self, citations):
         """
         Creates a dictionary of citations grouped by id
         Takes in .fetchall()  as a parameter
         Returns:
             Dictionary of citations
         """
-        for result in self.fetch_citations():
-            if result[0] not in self.group_result:
-                self.group_result[result[0]] = []
+        group_result = {}
+        for result in citations:
+            if result[0] not in group_result:
+                group_result[result[0]] = []
 
-            if result[0] in self.group_result:
-                self.group_result[result[0]].append(result[4])
+            if result[0] in group_result:
+                group_result[result[0]].append(result[4])
+        return group_result
 
-    def filter_citations(self, keyword):
+    def filter_citations(self, keyword, fetched_result, grouped_citations):
         """
         Creates a filtered list of citations filtered by keyword given by user
         Takes in .fetchall() from as a parameter
         Returns:
             List of filtered citations
         """
-        for citation in self.group_result: # pylint: disable=C0206
-            for citation_field in self.group_result[citation]:
+        filtered_result = []
+        for citation in grouped_citations: # pylint: disable=C0206
+            for citation_field in grouped_citations[citation]:
                 if str(keyword).upper() in str(citation_field).upper():
-                    for field in self.fetch_citations():
-                        if field[0] == citation and field not in self.new_fetched_result:
-                            self.new_fetched_result.append(field)
+                    for field in fetched_result:
+                        if field[0] == citation and field not in filtered_result:
+                            filtered_result.append(field)
+        return filtered_result
 
     def list_citations(self, keyword=""):
         """
@@ -110,9 +112,8 @@ class CitationRepository:
         """
 
         fetched_result = self.fetch_citations()
-        self.group_citations()
-        self.filter_citations(keyword)
-        fetched_result = self.new_fetched_result
+        grouped_citations = self.group_citations(fetched_result)
+        fetched_result = self.filter_citations(keyword, fetched_result, grouped_citations)
 
         fields = []
         citations = []
