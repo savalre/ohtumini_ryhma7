@@ -45,14 +45,6 @@ class TestCitationRepository(unittest.TestCase):
             self.assertEqual(result.entryname, "book2")
             self.assertTrue(("author", "test_author2") in result.fieldtypes)
 
-    def test_list_filter(self):
-        with app.app_context():
-            citation = Citation("BK34", "VOO", [("year",2022)])
-            cite_repo.store_citation(citation)
-
-            result = cite_repo.list_citations("2022")[0]
-            self.assertEqual(result.cite_as, "BK34")
-            
     def test_two_with_same_cite_as_fail(self):
         with app.app_context():
             citation = Citation("test_cite_as", "book", [("author","test_author")])
