@@ -15,8 +15,6 @@ class CitationRepository:
     """
     def __init__(self, database=db):
         self._db = database
-        self.group_result = {}
-        self.new_fetched_result = []
 
     def store_citation(self, citation):
         """
@@ -81,12 +79,13 @@ class CitationRepository:
         Returns:
             Dictionary of citations
         """
+        self._group_result = {}
         for result in self.fetch_citations():
-            if result[0] not in self.group_result:
-                self.group_result[result[0]] = []
+            if result[0] not in self._group_result:
+                self._group_result[result[0]] = []
 
-            if result[0] in self.group_result:
-                self.group_result[result[0]].append(result[4])
+            if result[0] in self._group_result:
+                self._group_result[result[0]].append(result[4])
 
     def filter_citations(self, keyword):
         """
@@ -95,12 +94,13 @@ class CitationRepository:
         Returns:
             List of filtered citations
         """
-        for citation in self.group_result: # pylint: disable=C0206
-            for citation_field in self.group_result[citation]:
+        self._new_fetched_result = []
+        for citation in self._group_result: # pylint: disable=C0206
+            for citation_field in self._group_result[citation]:
                 if str(keyword).upper() in str(citation_field).upper():
                     for field in self.fetch_citations():
-                        if field[0] == citation and field not in self.new_fetched_result:
-                            self.new_fetched_result.append(field)
+                        if field[0] == citation and field not in self._new_fetched_result:
+                            self._new_fetched_result.append(field)
 
     def list_citations(self, keyword=""):
         """
@@ -112,7 +112,7 @@ class CitationRepository:
         fetched_result = self.fetch_citations()
         self.group_citations()
         self.filter_citations(keyword)
-        fetched_result = self.new_fetched_result
+        fetched_result = self._new_fetched_result
 
         fields = []
         citations = []

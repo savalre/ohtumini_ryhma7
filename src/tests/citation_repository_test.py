@@ -27,7 +27,7 @@ class TestCitationRepository(unittest.TestCase):
             self.assertEqual(result.entryname, "book")
             self.assertTrue(("author", "test_author") in result.fieldtypes)
 
-    def test_list_two_citations_with_same_user(self):
+    def test_list_two_citations(self):
         with app.app_context():
             citation = Citation("test_cite_as", "book", [("author","test_author")])
             cite_repo.store_citation(citation)
