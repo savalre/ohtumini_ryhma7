@@ -76,7 +76,7 @@ class TestCitationRepository(unittest.TestCase):
             cite_repo.delete_selected_citations(["test_cite_as","test_cite_as3"])
 
             result = cite_repo.list_citations()
-            self.assertEqual(len(result), 1)
+            self.assertEqual(len(result), 2)
             self.assertEqual(result[0].cite_as, "test_cite_as2")
 
     
