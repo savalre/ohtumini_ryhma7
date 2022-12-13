@@ -15,9 +15,6 @@ Add Citation By Valid Doi
     Page Should Contain  article
     Page Should Contain  moti_22
     Page Should Contain  Ilana Bass and Dvir Lanzberg
-    Page Should Contain  ACM SIGCSE Bulletin
-    Page Should Contain  Iterative implementation of DFS
-    Page Should Contain  37
     Page Should Contain  2005
 
 Faulty Doi Is Not Added
