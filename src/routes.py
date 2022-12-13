@@ -28,20 +28,16 @@ def list_of_citations():
 
 @app.route("/delete", methods=["POST","GET"])
 def delete_selected_citations():
-    """'[summary]'
-
-    Returns:
-        [type]: [description]
+    """
+    Deletes selected citations from DB and redirects back to citation list
     """
     if request.method == 'POST':
         deletions_list = request.form.getlist('selection')
-        print(deletions_list)
-        cite_repo().delete_selected_citations(deletions_list)
-            
-
-    #message if database citation fails or succeeds
-
-    return redirect("/citations")
+        try:
+            cite_repo().delete_selected_citations(deletions_list)
+            return redirect("/citations")   
+        except Exception as IntegrityError: 
+            return redirect("/citations")
 
 
 @app.route("/citations.bib")

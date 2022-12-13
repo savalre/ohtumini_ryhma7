@@ -125,27 +125,33 @@ class CitationRepository:
         self._db.session.commit()
     
     def delete_selected_citations(self,deletions_list):
-        """[summary]
+        """[Deletes selected citations from DB
+            by first searching citation.id for selected citation and then 
+            updating deleted-value to 1 so that citation doesn't show in lists anymore]
 
         Args:
-            deletions_list ([type]): [description]
+            deletions_list ([string]): [list of cite_as-parameters of selected citations]
 
         Returns:
-            [type]: [description]
+            [boolean]: [True or False depending on if deleting of citations was successful or not]
         """
         
         deleting_citations = deletions_list
         self._db.session.begin()
-        for citation in deleting_citations:
-            values = {'citation': citation}
-            sql = "SELECT c.id FROM citations c, entry_types e WHERE c.id=e.citation_id AND e.cite_as= :citation"
-            citation_id = self._db.session.execute(sql,values).one()
-            print("SITAATIN ID = ", citation_id[0])
-            values = {'id': citation_id[0]}
-            sql = "UPDATE citations SET deleted = 1 WHERE id= :id"        
-            self._db.session.execute(sql,values)
+        try:
+            for citation in deleting_citations:
+                values = {'citation': citation}
+                sql = "SELECT c.id FROM citations c, entry_types e WHERE c.id=e.citation_id AND e.cite_as= :citation"
+                citation_id = self._db.session.execute(sql,values).one()
+                values = {'id': citation_id[0]}
+                sql = "UPDATE citations SET deleted = 1 WHERE id= :id"        
+                self._db.session.execute(sql,values)
+                self._db.session.commit()
+                return True
+        except IntegrityError as error:
+            print(error)
+            self._db.session.rollback()
+            return False
 
-        self._db.session.commit()
-        return True
 
 default_citation_repository = CitationRepository()
