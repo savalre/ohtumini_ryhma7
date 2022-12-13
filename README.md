@@ -1,5 +1,5 @@
 # ohtumini_ryhma7
-[![GHA workflow badge](https://github.com/savalre/ohtumini_ryhma7/workflows/CI/badge.svg)](https://github.com/savalre/ohtumini_ryhma7/actions)
+[![CI](https://github.com/savalre/ohtumini_ryhma7/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/savalre/ohtumini_ryhma7/actions/workflows/main.yml)
 [![codecov](https://codecov.io/gh/savalre/ohtumini_ryhma7/branch/main/graph/badge.svg?token=WXI3JMVJOM)](https://codecov.io/gh/savalre/ohtumini_ryhma7)
 
 
