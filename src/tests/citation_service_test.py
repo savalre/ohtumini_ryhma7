@@ -5,7 +5,7 @@ from services.citation_service import CitationService, UserInputError
 
 init_db()
 
-class TestCitationRepository(unittest.TestCase):
+class TestCitationService(unittest.TestCase):
 
     def setUp(self):
         self.cite_serve = CitationService()
@@ -101,3 +101,20 @@ class TestCitationRepository(unittest.TestCase):
 
 
         self.assertTrue(testValue, message)
+
+    def test_filter_by_selection(self):
+        citations = [
+                    Citation("Cite1", None, None),
+                    Citation("Cite2", None, None),
+                    Citation("Cite3", None, None),
+                    Citation("Cite4", None, None),
+                    ]
+
+        selection1 = ["Cite1"]
+        selection2 = ["Cite2"]
+        selection3 = ["Cite1", "Cite4"]
+        selection4 = ["Cite1", "Cite2", "Cite3", "Cite4"]
+        self.assertEqual(self.cite_serve.filter_to_selected(citations, selection1), citations[0:1])
+        self.assertEqual(self.cite_serve.filter_to_selected(citations, selection2), citations[1:2])
+        self.assertEqual(self.cite_serve.filter_to_selected(citations, selection3), [citations[0], citations[3]])
+        self.assertEqual(self.cite_serve.filter_to_selected(citations, selection4), citations)

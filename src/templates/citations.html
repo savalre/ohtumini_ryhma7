@@ -1,23 +1,22 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <title>Citations</title>
-  </head>
-  
+	<head>
+		<title>Citations</title>
+	</head>
+
 	<body>
-    <h1>List of citations</h1>
-    <br>
+		<h1>List of citations</h1>
 		<a href="/new">Add a new citation</a>
 		<br/>
 		<a href="/">Return to the home page</a>
-    <br/>
-		<button onclick="selectAll()">Select all</button>
-    <button onclick="deselectAll()">Deselect all</button>
+		<br/>
+		<button id=select_all onclick="selectAll()">Select all</button>
+		<button id=deselect_all onclick="deselectAll()">Deselect all</button>
     <form method="POST" action="/delete">
 		<ul>
 			{% for citation in citation_list %}
 			<li>
-				<input type="checkbox" name="selection" value="{{ citation.cite_as }}">
+				<input type="checkbox" name="selection" value={{ citation.cite_as  }}>
 				@{{ citation.entryname }}{ {{ citation.cite_as }},
 				<br/>
 				{% for fieldtype in citation.fieldtypes %}

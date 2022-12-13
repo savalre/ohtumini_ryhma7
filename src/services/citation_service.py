@@ -9,7 +9,7 @@ class UserInputError(Exception):
     """
 
 
-class CitationService(): # pylint: disable=too-few-public-methods
+class CitationService():
     """
     Class for validating citations
     """
