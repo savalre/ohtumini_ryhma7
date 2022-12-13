@@ -54,8 +54,9 @@ class CitationRepository:
                                                      "type":field_type[0], "value" :field_type[1]})
             self._db.session.commit()
             return True
-        except IntegrityError as error:
+        except IntegrityError:
             self._db.session.rollback()
+            return False
 
     def fetch_citations(self):
         """
@@ -127,10 +128,10 @@ class CitationRepository:
         sql = "DELETE FROM citations"
         self._db.session.execute(sql)
         self._db.session.commit()
-    
+
     def delete_selected_citations(self,deletions_list):
         """[Deletes selected citations from DB
-            by first searching citation.id for selected citation and then 
+            by first searching citation.id for selected citation and then
             updating deleted-value to 1 so that citation doesn't show in lists anymore]
 
         Args:
@@ -139,7 +140,7 @@ class CitationRepository:
         Returns:
             [boolean]: [True or False depending on if deleting of citations was successful or not]
         """
-        
+
         deleting_citations = deletions_list
         self._db.session.begin()
         try:
@@ -149,11 +150,11 @@ class CitationRepository:
                         AND c.deleted=0 AND e.cite_as= :citation"
                 citation_id = self._db.session.execute(sql,values).one()
                 values = {'id': citation_id[0]}
-                sql = "UPDATE citations SET deleted = 1 WHERE id= :id AND deleted=0"        
+                sql = "UPDATE citations SET deleted = 1 WHERE id= :id AND deleted=0"
                 self._db.session.execute(sql,values)
                 self._db.session.commit()
             return True
-        except IntegrityError as error:
+        except IntegrityError:
             self._db.session.rollback()
             return False
 
