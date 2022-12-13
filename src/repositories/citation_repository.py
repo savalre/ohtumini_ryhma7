@@ -69,7 +69,7 @@ class CitationRepository:
 
         return self._db.session.execute(sql).fetchall()
 
-    def group_citations(self, fetched_result):
+    def group_citations(self):
         """
         Creates a dictionary of citations grouped by id
         Takes in .fetchall()  as a parameter
@@ -79,10 +79,10 @@ class CitationRepository:
         for result in self.fetch_citations():
             if result[0] not in self.group_result:
                 self.group_result[result[0]] = []
-            
+
             if result[0] in self.group_result:
                 self.group_result[result[0]].append(result[4])
-    
+
     def filter_citations(self, keyword):
         """
         Creates a filtered list of citations filtered by keyword given by user
@@ -90,12 +90,12 @@ class CitationRepository:
         Returns:
             List of filtered citations
         """
-        for citation in self.group_result:
+        for citation in self.group_result: # pylint: disable=C0206
             for citation_field in self.group_result[citation]:
                 if str(keyword).upper() in str(citation_field).upper():
                     for field in self.fetch_citations():
                         if field[0] == citation and field not in self.new_fetched_result:
-                            self.new_fetched_result.append(field)  
+                            self.new_fetched_result.append(field)
 
     def list_citations(self, keyword=""):
         """
@@ -105,7 +105,7 @@ class CitationRepository:
         """
 
         fetched_result = self.fetch_citations()
-        self.group_citations(fetched_result)
+        self.group_citations()
         self.filter_citations(keyword)
         fetched_result = self.new_fetched_result
 
