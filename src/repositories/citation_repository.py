@@ -125,8 +125,15 @@ class CitationRepository:
         self._db.session.commit()
     
     def delete_selected_citations(self,deletions_list):
+        """[summary]
+
+        Args:
+            deletions_list ([type]): [description]
+
+        Returns:
+            [type]: [description]
         """
-        """
+        
         deleting_citations = deletions_list
         self._db.session.begin()
         for citation in deleting_citations:
@@ -137,12 +144,6 @@ class CitationRepository:
             values = {'id': citation_id[0]}
             sql = "UPDATE citations SET deleted = 1 WHERE id= :id"        
             self._db.session.execute(sql,values)
-
-        #sql = "INSERT INTO "
-        #SELECT c.id, e.cite_as, e.type, f.type, f.value
-         #       FROM citations c, entry_types e, fields f
-          #      WHERE c.id=e.citation_id AND c.id=f.citation_id
-           #     AND c.deleted=0 ORDER BY c.id"
 
         self._db.session.commit()
         return True

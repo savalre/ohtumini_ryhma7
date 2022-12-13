@@ -46,3 +46,35 @@ class TestCitationRepository(unittest.TestCase):
             self.assertEqual(result.cite_as, "test_cite_as2")
             self.assertEqual(result.entryname, "book2")
             self.assertTrue(("author", "test_author2") in result.fieldtypes)
+    
+    def test_delete_one_citation(self):
+        with app.app_context():
+            citation = Citation("test_cite_as", "book", [("author","test_author")])
+            cite_repo.store_citation(citation)
+
+            citation = Citation("test_cite_as2", "book2", [("author","test_author2")])
+            cite_repo.store_citation(citation)
+
+            cite_repo.delete_selected_citations(["test_cite_as2"])
+
+            result = cite_repo.list_citations()
+            self.assertEqual(len(result), 1)
+            self.assertEqual(result[0].cite_as, "test_cite_as")
+
+
+    
+"""     def test_delete_multiple_citations(self):
+        with app.app_context():
+            citation = Citation("test_cite_as", "book", [("author","test_author")])
+            cite_repo.store_citation(citation)
+
+            citation = Citation("test_cite_as2", "book2", [("author","test_author2")])
+            cite_repo.store_citation(citation)
+
+    
+    def test_deleted_citation_not_found_in_list(self):
+        with app.app_context(): """
+
+    
+
+
