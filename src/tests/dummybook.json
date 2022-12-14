@@ -1,0 +1,11 @@
+{"type": "BOOK",
+ "author": [{"family": "Motivaatio",
+             "given":"Moti"},
+            {"family": "Masis",
+             "given": "Maija"}],
+ "issued": {"date-parts": [[2022, 12, 12]]},
+ "container-title": "Motivaatio ja sen puute",
+ "title": "Motivaation Puute",
+ "volume": "22",
+ "publisher": "WSOY"
+}
