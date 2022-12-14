@@ -3,8 +3,6 @@ CitationByDoi
 Fetches the citation data from the ACM web library
 by doi
 """
-from bs4 import BeautifulSoup
-
 class CitationByDoi:
     """
     Uses the BeautifulSoup library to parse relevant metadata
@@ -13,73 +11,144 @@ class CitationByDoi:
     Returns a dictionary of the metadata or an error message
     """
     def __init__(self, content):
-        self._soup = BeautifulSoup(content, 'html.parser')
+        self.content = content
+        self.type = self.get_type(self.content['type'])
 
     def get_references(self):
         """
-        Handles the creation of the metadata dictionary
+        Calls the correct function to build the metadata dictionary
 
         Returns:
             Dictionary of the metadata
         """
-        data = {}
-        data['author'] = self.get_authors()
-        data['title'] = self.get_title()
-        data['booktitle'] = self.get_journal()
-        data['type'] = self.get_type(data['booktitle'])
-        data['year'] = self.get_year()
-        if data['type'] == 'article':
-            data['volume'] = self.get_volume()
-            data['journal'] = data['booktitle']
-            del data['booktitle']
+        if self.type == "book":
+            data = self.get_book_data()
+        if self.type == "inproceedings":
+            data = self.get_inproceedings_data()
+        if self.type == "article":
+            data = self.get_article_data()
+        if self.type == "phdthesis":
+            data = self.get_phdthesis_data()
+        if self.type == "techreport":
+            data = self.get_techreport_data()
+        if self.type == "proceedings":
+            data = self.get_proceedings_data()
+        if self.type == "inbook":
+            data = self.get_inbook_data()
         return data
+
+    def get_book_data(self):
+        """
+        Creates dict for book types
+        """
+        citation = {"type":"book"}
+        citation["author"] = self.get_authors()
+        citation["title"] = self.content["title"]
+        citation["year"] = self.get_year()
+        citation["publisher"] = self.content["publisher"]
+        return citation
+
+    def get_inproceedings_data(self):
+        """
+        Creates dict for inproceedings types
+        """
+        citation = {"type":"inproceedings"}
+        citation["author"] = self.get_authors()
+        citation["title"] = self.content["title"]
+        citation["booktitle"] = self.content["container-title"]
+        citation["year"] = self.get_year()
+        return citation
+
+    def get_article_data(self):
+        """
+        Creates dict for article types
+        """
+        citation = {"type":"article"}
+        citation["author"] = self.get_authors()
+        citation["title"] = self.content["title"]
+        citation["journal"] = self.content["container-title"]
+        citation["year"] = self.get_year()
+        if self.content.get("volume") is None:
+            citation["volume"] = self.content["issue"]
+        else:
+            citation["volume"] = self.content["volume"]
+        return citation
+
+    def get_phdthesis_data(self):
+        """
+        Creates dict for phdthesis types
+        """
+        citation = {"type":"phdthesis"}
+        citation["author"] = self.get_authors()
+        citation["title"] = self.content["title"]
+        citation["school"] = self.content["publisher"]
+        citation["year"] = self.get_year()
+        return citation
+
+    def get_techreport_data(self):
+        """
+        Creates dict for techreport types
+        """
+        citation = {"type":"techreport"}
+        citation["author"] = self.get_authors()
+        citation["title"] = self.content["title"]
+        citation["institution"] = self.content["publisher"]
+        return citation
+
+    def get_proceedings_data(self):
+        """
+        Creates dict for proceedings types
+        """
+        citation = {"type":"proceedings"}
+        citation["title"] = self.content["title"]
+        citation["year"] = self.get_year()
+        return citation
+
+    def get_inbook_data(self):
+        """
+        Creates dict for inbook types
+        """
+        citation = {"type":"inbook"}
+        citation["author"] = self.get_authors()
+        citation["title"] = self.content["title"]
+        citation["pages"] = self.content["page"]
+        citation["publisher"] = self.content["publisher"]
+        citation["year"] = self.get_year()
+        return citation
 
     def get_authors(self):
         """
-        Parses the author names from the html soup
+        Gets the author(s) from the dictionary
         """
-        authors_list = []
-        for author in self._soup.find_all(class_="loa__author-name"):
-            authors_list.append(author.get_text())
-        authors = (" and ").join(authors_list)
-        return authors
-
-    def get_title(self):
-        """
-        Parses the article title from the html soup
-        """
-        title = self._soup.find(class_="citation__title")
-        return title.get_text()
-
-    def get_journal(self):
-        """
-        Parses the publication name from the html soup
-        """
-        journal = self._soup.find(class_="epub-section__title")
-        return journal.get_text()
+        authors = []
+        authors_raw = self.content["author"]
+        for author in authors_raw:
+            authors.append(f"{author['given']} {author['family']}")
+        return " and ".join(authors)
 
     def get_year(self):
         """
-        Parses the publication year from the html soup
+        Gets the year from the dictionary
         """
-        raw = self._soup.find(class_="epub-section__date").get_text()
-        year = raw.split()[1]
-        return year
+        return self.content["issued"]["date-parts"][0][0]
 
-    def get_type(self,title):
+    def get_type(self,raw_type):
         """
-        Determines the type of the citation by the title of
-        the publication
+        Determines the type of the publication by the type in the
+        dictionary
         """
-        words = title.split()
-        if "Proceedings" in words or "Conference" in words:
-            return "inproceedings"
-        return "article"
-
-    def get_volume(self):
-        """
-        Parses the volume of the publication from the html soup
-        """
-        raw = self._soup.find(class_="comma-separator").get_text()
-        volume = raw.split()[1]
-        return volume
+        entry_type = ""
+        type_dict = {"article":["ARTICLE","ARTICLE_JOURNAL","ARTICLE_MAGAZINE",
+                                "ARTICLE_NEWSPAPER"],
+                     "book":["BOOK"],
+                     "inproceedings":["PAPER_CONFERENCE"],
+                     "phdthesis":["THESIS"],
+                     "techreport":["REPORT"],
+                     "inbook":["CHAPTER"]
+                     }
+        for key, values in type_dict.items():
+            if raw_type in values:
+                entry_type = key
+        if self.content.get("genre") == "proceeding" and entry_type == "book":
+            entry_type = "proceedings"
+        return entry_type
