@@ -63,3 +63,32 @@ class CitationService():
         selection_set = set(selection_list)
         filtered_list = [cite for cite in citations if cite.cite_as in selection_set]
         return filtered_list
+
+    def convert_list_into_dict(self, citation_list):
+        """
+        Function that converts a list of citations into a dictionary, so that
+        the table in the citations page will contain the correct values.
+        """
+        citation_dict = {}
+        i = 0
+        for citation in citation_list:
+            title = ""
+            author = ""
+            year = ""
+            for field_type in citation.fieldtypes:
+                if field_type[0] == "title":
+                    title = field_type[1]
+                elif field_type[0] == "author":
+                    author = field_type[1]
+                elif field_type[0] == "year":
+                    year = field_type[1]
+
+            citation_dict[i] = {
+                "entry_type": citation.entryname,
+                "cite_as": citation.cite_as,
+                "title": title,
+                "author": author,
+                "year": year
+            }
+            i = i + 1
+        return citation_dict

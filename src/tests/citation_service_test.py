@@ -118,3 +118,16 @@ class TestCitationService(unittest.TestCase):
         self.assertEqual(self.cite_serve.filter_to_selected(citations, selection2), citations[1:2])
         self.assertEqual(self.cite_serve.filter_to_selected(citations, selection3), [citations[0], citations[3]])
         self.assertEqual(self.cite_serve.filter_to_selected(citations, selection4), citations)
+
+    def test_convert_list_into_dict(self):
+        field_types = [("author", "Ricotrap"), ("title","God Why"), ("year", 2022)]
+        citations = [Citation("bp", "misc", field_types)]
+        dict = self.cite_serve.convert_list_into_dict(citations)
+
+        self.assertEqual(dict[0]["entry_type"], "misc")
+        self.assertEqual(dict[0]["cite_as"], "bp")
+        self.assertEqual(dict[0]["title"], "God Why")
+        self.assertEqual(dict[0]["author"], "Ricotrap")
+        self.assertEqual(dict[0]["year"], 2022)
+
+
