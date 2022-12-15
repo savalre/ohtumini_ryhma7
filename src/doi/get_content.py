@@ -27,5 +27,5 @@ def get_content(doi):
         article = items[0]
         content = article[doi]
         return content
-    except:
+    except json.JSONDecodeError:
         return "404"
