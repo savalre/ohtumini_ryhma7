@@ -128,7 +128,7 @@ def new_type(entry_type):
         if len(types_list) == 0:
             return redirect("/new")
         return render_template("entrytypecitation.html", entry_type = entry_type, list = types_list, noerror = True)
-    
+
 
 @app.route("/new/citation", methods=["POST", "GET"])
 def new_citation():
