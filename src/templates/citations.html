@@ -26,22 +26,16 @@
 				</tr>
 			</thead>
 			<tbody>
-				{% for citation in citation_list %}
+				{% for i in range(0, citation_dict|length) %}
 				<tr>
-					<th><input type="checkbox" name="selection" value={{ citation.cite_as  }}></th>
-					<th>{{ citation.entryname }}</th>
-					<th>{{ citation.cite_as }}</th>
-					{% for fieldtype in citation.fieldtypes %}
-						{% if fieldtype[0] == "title" %}
-							<th>{{ fieldtype[1] }}</th>
-						{% elif fieldtype[0] == "author" %}
-							<th>{{ fieldtype[1] }}</th>
-						{% elif fieldtype[0] == "year" %}
-							<th>{{ fieldtype[1] }}</th>
-						{% endif %}
-					{% endfor %}
+					<th><input type="checkbox" name="selection" value={{ citation_dict[i]["cite_as"]  }}></th>
++					<th>{{ citation_dict[i]["entry_type"] }}</th>
++					<th>{{ citation_dict[i]["cite_as"] }}</th>
++					<th>{{ citation_dict[i]["title"] }}</th>
++					<th>{{ citation_dict[i]["author"] }}</th>
++					<th>{{ citation_dict[i]["year"] }}</th>
 				</tr>
-			{% endfor %}
+				{% endfor %}
 			</tbody>
 		</table>
     <input type="submit" value="Delete citation(s)" onclick="alert('Are you sure you want to delete selected citation(s)?')">

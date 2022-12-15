@@ -28,9 +28,11 @@ def list_of_citations():
     """
     if request.method == "POST":
         keyword = request.form.get("keyword")
-        return render_template("citations.html", citation_list = cite_repo().list_citations(keyword))
+        citation_list = cite_repo().list_citations(keyword)
+        return render_template("citations.html", citation_dict = convert_list_into_dict(citation_list))
 
-    return render_template("citations.html", citation_list = cite_repo().list_citations())
+    citation_list = cite_repo().list_citations()
+    return render_template("citations.html", citation_dict = convert_list_into_dict(citation_list))
 
 @app.route("/delete", methods=["POST"])
 def delete_selected_citations():
@@ -162,3 +164,25 @@ def get_list_of_field_types(entry_type):
             return redirect("/new")
         types_list = tuple(data[entry_type].items())
         return types_list
+
+def convert_list_into_dict(citation_list):
+    citation_dict = {}
+    i = 0
+    for citation in citation_list:
+        title = ""
+        author = ""
+        year = ""
+        for field_type in citation.fieldtypes:
+            if field_type[0] == "title": title = field_type[1]
+            elif field_type[0] == "author": author = field_type[1]
+            elif field_type[0] == "year": year = field_type[1]
+
+        citation_dict[i] = {
+            "entry_type": citation.entryname,
+            "cite_as": citation.cite_as, 
+            "title": title,
+            "author": author,
+            "year": year
+        }
+        i = i + 1
+    return citation_dict
