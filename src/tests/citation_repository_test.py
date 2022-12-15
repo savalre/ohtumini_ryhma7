@@ -127,5 +127,3 @@ class TestCitationRepository(unittest.TestCase):
                 cite_repo.list_citations("Kaisa")[0]
             
             self.assertTrue('list index out of range' in str(context.exception))
-    
-
