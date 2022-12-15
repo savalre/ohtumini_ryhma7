@@ -102,6 +102,30 @@ class TestCitationRepository(unittest.TestCase):
             self.assertEqual(result[0].cite_as, "test_cite_as2")
             self.assertEqual(result[1].cite_as, "test_cite_as3")
 
-    
+    def test_search_valid(self):
+        with app.app_context():
+            citation = Citation("BK459", "Book", [("author","Juuso")])
+            cite_repo.store_citation(citation)
+            
+            citation = Citation("AX832", "Article", [("author","Petteri")])
+            cite_repo.store_citation(citation)
+            
+            result = cite_repo.list_citations("Petteri")[0]
+            self.assertEqual(result.cite_as, "AX832")
+            self.assertEqual(result.entryname, "Article")
+            self.assertTrue(("author", "Petteri") in result.fieldtypes)
 
+    def test_search_invalid(self):
+        with app.app_context():
+            citation = Citation("BK459", "Book", [("author","Juuso")])
+            cite_repo.store_citation(citation)
+            
+            citation = Citation("AX832", "Article", [("author","Petteri")])
+            cite_repo.store_citation(citation)
+            
+            with self.assertRaises(IndexError) as context:
+                cite_repo.list_citations("Kaisa")[0]
+            
+            self.assertTrue('list index out of range' in str(context.exception))
+    
 
