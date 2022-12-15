@@ -12,7 +12,7 @@
         <p> Select an entry type from the options:
             <form action="/new" method="post">
                 <select name="entry_type">
-                    {% for type in list%}
+                    {% for type in list %}
                     <option value={{type}}>{{type}}</option>
                     {% endfor %}
                 </select>
