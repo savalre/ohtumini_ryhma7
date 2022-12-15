@@ -1,6 +1,7 @@
 """
 Function to make a request to the ACM web library
 """
+import json
 import requests
 
 def get_content(doi):
@@ -14,8 +15,17 @@ def get_content(doi):
         Contents of the request if the page exists,
         otherwise error.
     """
-    url = f"https://dl.acm.org/doi/{doi}"
-    req = requests.get(url, timeout=10)
-    if req.status_code == 404:
+    url = "https://dl.acm.org/action/exportCiteProcCitation"
+    params = {"dois":doi,
+              "targetFile": "custom-bibtex",
+              "format": "bibTex"
+             }
+    response = requests.get(url, params, timeout=10)
+    try:
+        data = json.loads(response.text)
+        items = data['items']
+        article = items[0]
+        content = article[doi]
+        return content
+    except json.JSONDecodeError:
         return "404"
-    return req.content
