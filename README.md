@@ -4,6 +4,8 @@
 
 Ryhmän sprint ja product backlogit löytyvät [täältä](https://docs.google.com/spreadsheets/d/1PqclL4F416XCGlqTMUGlVKjF476jDCD9jPbh827wm8E/edit#gid=0).
 
+[Loppuraportti](https://docs.google.com/document/d/1adWzlUOv29k_rxVCNEW-3Tq7hAJWsvBlkTLEd9czguM/edit?usp=sharing)
+
 ## Ohjelman asennus
 Tiedostojen ladattua ensin siirry terminaalissa hakemistoon jossa on tiedosto poetry.lock.
 Suorita komento:
